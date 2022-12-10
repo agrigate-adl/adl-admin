@@ -57,6 +57,14 @@ function SidebarComponent() {
                 onClick={() => onClick(SLUGS.products)}
             />
             <MenuItem
+                    id={SLUGS.scratchCardsTwo}
+                    title='Packages'
+                    
+                    icon={IconContacts}
+                    onClick={() => onClick(SLUGS.packages)}
+                />
+            
+            <MenuItem
                 id={SLUGS.transactions}
                 title='Transactions'
                 icon={Icontransactions}
@@ -82,6 +90,7 @@ function SidebarComponent() {
                     icon={IconContacts}
                     onClick={() => onClick(SLUGS.scratchCardsTwo)}
                 />
+               
             </MenuItem>
             <MenuItem
                 id={SLUGS.contacts}

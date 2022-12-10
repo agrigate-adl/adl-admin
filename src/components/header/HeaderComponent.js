@@ -8,6 +8,7 @@ import SLUGS from 'resources/slugs';
 import { IconBell, IconSearch } from 'assets/icons';
 import Avatar from 'components/Avatar';
 import DropdownComponent from 'components/dropdown';
+import { Subtitles } from '@material-ui/icons';
 
 const useStyles = createUseStyles((theme) => ({
     avatar: {
@@ -70,6 +71,7 @@ function HeaderComponent() {
     const classes = useStyles({ theme });
 
     let title;
+    let subtitles;
     switch (true) {
         case currentItem === SLUGS.dashboard:
             title = 'Dashboard Farmers';
@@ -86,6 +88,14 @@ function HeaderComponent() {
         case currentItem === SLUGS.contacts:
             title = 'Support Contacts';
             break;
+        case currentItem === SLUGS.packages:  
+             title ='Packages' 
+             break;
+             case currentItem === SLUGS.farmer:  
+             
+             title ='Farmer Page' 
+             
+             break;    
         default:
             title = '';
     }
