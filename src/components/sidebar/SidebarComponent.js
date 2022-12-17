@@ -9,12 +9,14 @@ import {
     IconLogout,
     Iconproducts,
     IconSubscription,
-    Icontransactions
+    Icontransactions,
+    Homeicon
 } from 'assets/icons';
 import { convertSlugToUrl } from 'resources/utilities';
 import LogoComponent from './LogoComponent';
 import Menu from './MenuComponent';
 import MenuItem from './MenuItemComponent';
+import { CardMembership, ContactMailRounded, ContactMailSharp, Home, Payment } from '@material-ui/icons';
 
 const useStyles = createUseStyles({
     separator: {
@@ -47,7 +49,7 @@ function SidebarComponent() {
             <MenuItem
                 id={SLUGS.dashboard}
                 title='Dashboard (Farmers)'
-                icon={IconSubscription}
+                icon={Home}
                 onClick={() => onClick(SLUGS.dashboard)}
             />
             <MenuItem
@@ -57,31 +59,40 @@ function SidebarComponent() {
                 onClick={() => onClick(SLUGS.products)}
             />
             <MenuItem
+                    id={SLUGS.scratchCardsTwo}
+                    title='Packages'
+                    
+                    icon={ContactMailSharp}
+                    onClick={() => onClick(SLUGS.packages)}
+                />
+            
+            <MenuItem
                 id={SLUGS.transactions}
                 title='Transactions'
-                icon={Icontransactions}
+                icon={Payment}
                 onClick={() => onClick(SLUGS.transactions)}
             />
             <MenuItem
                 id={SLUGS.scratchCards}
                 items={[SLUGS.scratchCardsTwo, SLUGS.scratchCardsThree]}
                 title='Scratch Cards'
-                icon={IconscratchCards}
+                icon={CardMembership}
             >
                 <MenuItem
                     id={SLUGS.scratchCards}
                     title='Cards products'
                     level={2}
-                    icon={IconAgents}
+                    icon={CardMembership}
                     onClick={() => onClick(SLUGS.scratchCards)}
                 />
                 <MenuItem
                     id={SLUGS.scratchCardsTwo}
                     title='Create New Cards'
                     level={2}
-                    icon={IconContacts}
+                    icon={ContactMailRounded}
                     onClick={() => onClick(SLUGS.scratchCardsTwo)}
                 />
+               
             </MenuItem>
             <MenuItem
                 id={SLUGS.contacts}

@@ -1,11 +1,9 @@
 import React from 'react';
 import { Column, Row } from 'simple-flexbox';
 import { createUseStyles } from 'react-jss';
-import MiniCardComponent from 'components/cards/MiniCardComponent';
-import TodayTrendsComponent from './TodayTrendsComponent';
-import UnresolvedtransactionsComponent from './UnresolvedtransactionsComponent';
-import TasksComponent from './TasksComponent';
 
+import Model from '../../components/FarmerSModel'
+ import ListOfFarmers from'../../components/ListOfFarmers'
 const useStyles = createUseStyles({
     cardsContainer: {
         marginRight: -30,
@@ -49,60 +47,18 @@ function DashboardComponent() {
     const classes = useStyles();
     return (
         <Column>
-            <Row
-                className={classes.cardsContainer}
-                wrap
-                flexGrow={1}
-                horizontal='space-between'
-                breakpoints={{ 768: 'column' }}
-            >
-                <Row
-                    className={classes.cardRow}
-                    wrap
-                    flexGrow={1}
-                    horizontal='space-between'
-                    breakpoints={{ 384: 'column' }}
-                >
-                    <MiniCardComponent
-                        className={classes.miniCardContainer}
-                        title='Unresolved'
-                        value='60'
-                    />
-                    <MiniCardComponent
-                        className={classes.miniCardContainer}
-                        title='Overdue'
-                        value='16'
-                    />
-                </Row>
-                <Row
-                    className={classes.cardRow}
-                    wrap
-                    flexGrow={1}
-                    horizontal='space-between'
-                    breakpoints={{ 384: 'column' }}
-                >
-                    <MiniCardComponent
-                        className={classes.miniCardContainer}
-                        title='Open'
-                        value='43'
-                    />
-                    <MiniCardComponent
-                        className={classes.miniCardContainer}
-                        title='On hold'
-                        value='64'
-                    />
-                </Row>
-            </Row>
+          
             <div className={classes.todayTrends}>
-                <TodayTrendsComponent />
+            
+                <Model />
             </div>
             <Row
                 horizontal='space-between'
                 className={classes.lastRow}
                 breakpoints={{ 1024: 'column' }}
             >
-                <UnresolvedtransactionsComponent containerStyles={classes.unresolvedtransactions} />
-                <TasksComponent containerStyles={classes.tasks} />
+         
+              <ListOfFarmers />
             </Row>
         </Column>
     );
