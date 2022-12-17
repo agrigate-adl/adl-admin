@@ -6,13 +6,18 @@ import Theme from 'resources/theme';
 import Routes from 'routes';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux';
+import store  from'./app/store'
 
 ReactDOM.render(
-    <ThemeProvider theme={Theme}>
+    <Provider store={store}>
+        <ThemeProvider theme={Theme}>
         <Router>
             <Routes />
         </Router>
-    </ThemeProvider>,
+    </ThemeProvider>
+    </Provider>
+    ,
     document.getElementById('root')
 );
 

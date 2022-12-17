@@ -9,6 +9,8 @@ import { IconBell, IconSearch } from 'assets/icons';
 import Avatar from 'components/Avatar';
 import DropdownComponent from 'components/dropdown';
 import { Subtitles } from '@material-ui/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, selectUser } from 'features/userSlice';
 
 const useStyles = createUseStyles((theme) => ({
     avatar: {
@@ -103,6 +105,12 @@ function HeaderComponent() {
     // function onSettingsClick() {
     //     push(SLUGS.settings);
     // }
+    const dispatch = useDispatch();
+    const user = useSelector(selectUser);
+    const handleLogout =(e)=>{
+        e.preventDefault();
+        dispatch(logout());
+    }
 
     return (
         <Row className={classes.container} vertical='center' horizontal='space-between'>
@@ -142,14 +150,14 @@ function HeaderComponent() {
                 <DropdownComponent
                     label={
                         <>
-                            <span className={classes.name}>Jhon Lack</span>
+                            <span className={classes.name}>{user.email}</span>
                            <Avatar name='Admin' className={classes.avatar}/>
                         </>
                     }
                     options={[
                         {
                             label: 'Logout',
-                            onClick: () => console.log('logout')
+                            onClick: console.log("tapped")
                         }
                     ]}
                     position={{

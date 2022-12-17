@@ -14,6 +14,8 @@ import IconSearch from './icon-search';
 import IconSettings from './icon-settings';
 import IconSubscription from './icon-subscription';
 import Icontransactions from './icon-transactions';
+import { MenuBook } from '@material-ui/icons';
+import Homeicon from 'assets/icons/homeicon';
 
 export {
     IconCheckboxOff,
@@ -31,5 +33,7 @@ export {
     IconSearch,
     IconSettings,
     IconSubscription,
-    Icontransactions
+    Icontransactions,
+    Homeicon,
 };
+
