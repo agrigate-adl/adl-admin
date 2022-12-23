@@ -55,7 +55,7 @@ function MenuItemComponent({ children, icon: Icon, id, items = [], level = 1, on
     return (
         <Column key={id} className={classNameColumn}>
             <Row vertical='center' onClick={onItemClicked} className={classNameContainer}>
-                <Icon fill={iconColor} opacity={!isActive && '0.4'} />
+                <Icon fill={iconColor} opacity={!isActive ? '0.4' : undefined} />
                 <span className={classes.title}>{title}</span>
             </Row>
             {isCollapsible && (
@@ -71,7 +71,7 @@ MenuItemComponent.defaultProps = {};
 
 MenuItemComponent.propTypes = {
     children: any,
-    icon: func,
+    icon: func | Object,
     id: string,
     onClick: func,
     items: arrayOf(string),

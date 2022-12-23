@@ -14,8 +14,7 @@ function Routes() {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
-
-   ;
+    // console.log(user)
     return user ? <PrivateSection /> : <PublicRoutes />;
 }
 

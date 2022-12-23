@@ -68,7 +68,103 @@ textarea,
 select {
     font: inherit;
 }
+.CenterSpinner{
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    padding: 2rem;
+}
+.hoverPackage{
+    color: blue;
+}
+.hoverPackage:hover{
+    cursor: pointer;
+}
+.packageRow{
+    display: flex;
+    flex-direction: row;
+    width: 25rem;
+    gap: 3rem;
+    padding: .2rem;
+}
+.packageRowH{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+    padding: .2rem;
+}
+.packageRow:hover{
+    color: blue;
+}
+.packCellHover:hover{
+    color: blue;
+}
+.packageCellH{
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
 
+}
+.packageCell{
+    text-align: center;
+    font-weight: 400;
+    font-size: 12px;
+}
+.FarmerDataRow{
+    display: flex;
+    border: 1px solid #ccc;
+    flex-direction: row;
+    background-color: #fff;
+    width: 70%;
+    padding-top:.5rem;
+    padding-bottom:.5rem;
+    padding-right: 3rem;
+    padding-left: 5px;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+.FarmerHeaderData{
+    font-size: large;
+    font-weight: 700;
+}
+.FarmerSectionData{
+    font-size: 15px;
+    font-weight: 400;
+    color: #424147;
+}
+.AccordianWid{
+    width: 70%;
+}
+.SelectMultipleField{
+    width: 18rem;
+}
+.menuItem{
+    font-size: 12px;  
+}
+.SelectionHolder{
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+.Printableholder{
+    display: grid;
+    padding: 3px;
+    width: 100%;
+    gap:1rem;
+    grid-template-columns: repeat(3,1fr);
+    background-color: #fff;
+}
+.SingleCard{
+    display:flex;
+    flex-direction: column;
+    background: #ceffda;
+    height: 60px;
+    padding:2px;
+    border: 1px dotted black;
+}
 /* Remove all animations and transitions for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
     * {

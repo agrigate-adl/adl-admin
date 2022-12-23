@@ -11,6 +11,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Spinner from '../../components/Spinner'
+import axios from "axios";
+import { API_BASE_URL } from "../../config";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { login } from 'features/userSlice';
@@ -34,18 +37,46 @@ export default function SignIn() {
 
     const [ email ,setEmail] = React.useState("")
     const [ password ,setPassword] = React.useState("")
+    const [ signingIN ,setsigningIN] = React.useState(false)
     const dispatch = useDispatch()
     const handleSubmit = (e) => {
+    setsigningIN(true)
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    if(email || password){
+        axios({
+            url: API_BASE_URL+"/admin/login",
+            method: "POST",
+            data: {
+              email:email,
+              password:password
+            }
+          })
+            .then((res) => {     
+                const user= {
+                   id: res.data.user._id,
+                   email:res.data.user.email,
+                   name:res.data.user.name,
+                   role:res.data.user.role,
+                   contact:res.data.user.contact,
+                   token:res.data.token
+                }
+                localStorage.setItem("token", user.token);
+                
+                setsigningIN(false)
+                return  dispatch(
+                     login(user)
+                  )
+            })
+            .catch((err) => { 
+                alert(err.data.messege)
+                setsigningIN(false)
+            });
+      
+    }else{
+      alert("email and password are both required")
+      return
+    }
 
-       dispatch(
-        login({
-            email: email,
-            password:password,
-            logIn: true,
-        })
-       )
   };
 
   return (
@@ -99,7 +130,7 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {signingIN? <Spinner/> : "Sign In"}
             </Button>
             <Grid container>
               <Grid item xs>

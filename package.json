@@ -12,6 +12,7 @@
         "@mui/icons-material": "^5.10.16",
         "@mui/material": "^5.10.17",
         "@reduxjs/toolkit": "^1.9.1",
+        "axios": "^1.2.1",
         "prop-types": "^15.7.2",
         "react": "^18.2.0",
         "react-burger-menu": "^2.6.13",
@@ -22,6 +23,8 @@
         "react-router-dom": "^5.2.0",
         "react-scripts": "3.4.3",
         "react-svg-line-chart": "^2.0.1",
+        "react-to-print": "^2.14.10",
+        "redux-persist": "^6.0.0",
         "simple-flexbox": "^2.3.1"
     },
     "scripts": {

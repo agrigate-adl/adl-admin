@@ -11,12 +11,7 @@ export default {
     packages: '/packages',
     contacts: '/contacts',
     addpackage:'/addpackage',
-    // agents: '/agents',
     farmer:'/farmer',
-    // articles: '/articles',
-    // settings: '/settings',
-    // subscription: '/subscription',
-    // auth
     login: '/login',
     signup: '/signup',
     forgotPassword: '/forgot_password'

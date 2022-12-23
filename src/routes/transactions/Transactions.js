@@ -20,6 +20,7 @@ const rows = [
 ];
 
 export default function BasicTable() {
+  const [stati, setStati ] = React.useState(true)
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -32,7 +33,7 @@ export default function BasicTable() {
             <TableCell align="right">Packages &nbsp;</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        {stati ? <div className="CenterSpinner">Transactions not initiated yet</div> :<TableBody>
           {rows.map((row) => (
             <TableRow
               key={row.name}
@@ -48,6 +49,7 @@ export default function BasicTable() {
             </TableRow>
           ))}
         </TableBody>
+        }
       </Table>
     </TableContainer>
   );

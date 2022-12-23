@@ -24,8 +24,6 @@ export default function BasicTextFields() {
         id="demo-helper-text-aligned"
         label="Description"
       />
-    
-       
       </div>
      
       <div>

@@ -3,19 +3,16 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import SLUGS from 'resources/slugs';
 import {
-    IconAgents,
     IconContacts,
-    IconscratchCards,
     IconLogout,
     Iconproducts,
-    IconSubscription,
-    Icontransactions,
-    Homeicon
 } from 'assets/icons';
 import { convertSlugToUrl } from 'resources/utilities';
 import LogoComponent from './LogoComponent';
 import Menu from './MenuComponent';
 import MenuItem from './MenuItemComponent';
+import {useDispatch} from 'react-redux';
+import { logout } from 'features/userSlice';
 import { CardMembership, ContactMailRounded, ContactMailSharp, Home, Payment } from '@material-ui/icons';
 
 const useStyles = createUseStyles({
@@ -33,12 +30,18 @@ function SidebarComponent() {
     const classes = useStyles({ theme });
     const isMobile = window.innerWidth <= 1080;
 
-    async function logout() {
-        push(SLUGS.login);
-    }
+    // async function logout() {
+    //     // log out
+    //     push(SLUGS.login);
+    // }
 
     function onClick(slug, parameters = {}) {
         push(convertSlugToUrl(slug, parameters));
+    }
+    const dispatch = useDispatch();
+    
+    async function handleLogout(){
+        dispatch(logout());
     }
 
     return (
@@ -59,9 +62,8 @@ function SidebarComponent() {
                 onClick={() => onClick(SLUGS.products)}
             />
             <MenuItem
-                    id={SLUGS.scratchCardsTwo}
+                    id={SLUGS.packages}
                     title='Packages'
-                    
                     icon={ContactMailSharp}
                     onClick={() => onClick(SLUGS.packages)}
                 />
@@ -101,7 +103,7 @@ function SidebarComponent() {
                 onClick={() => onClick(SLUGS.contacts)}
             />
             <div className={classes.separator}></div>
-            <MenuItem id='logout' title='Logout' icon={IconLogout} onClick={logout} />
+            <MenuItem id='logout' title='Logout' icon={IconLogout} onClick={()=>{handleLogout()}} />
         </Menu>
     );
 }

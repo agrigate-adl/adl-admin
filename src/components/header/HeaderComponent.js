@@ -8,7 +8,6 @@ import SLUGS from 'resources/slugs';
 import { IconBell, IconSearch } from 'assets/icons';
 import Avatar from 'components/Avatar';
 import DropdownComponent from 'components/dropdown';
-import { Subtitles } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectUser } from 'features/userSlice';
 
@@ -73,7 +72,6 @@ function HeaderComponent() {
     const classes = useStyles({ theme });
 
     let title;
-    let subtitles;
     switch (true) {
         case currentItem === SLUGS.dashboard:
             title = 'Dashboard Farmers';
@@ -102,13 +100,9 @@ function HeaderComponent() {
             title = '';
     }
 
-    // function onSettingsClick() {
-    //     push(SLUGS.settings);
-    // }
     const dispatch = useDispatch();
     const user = useSelector(selectUser);
-    const handleLogout =(e)=>{
-        e.preventDefault();
+    const handleLogout =()=>{
         dispatch(logout());
     }
 
@@ -157,7 +151,7 @@ function HeaderComponent() {
                     options={[
                         {
                             label: 'Logout',
-                            onClick: console.log("tapped")
+                            onClick: ()=>handleLogout()
                         }
                     ]}
                     position={{
