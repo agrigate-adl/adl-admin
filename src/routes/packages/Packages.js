@@ -41,6 +41,7 @@ export default function BasicTable() {
             <TableCell >Status</TableCell>
             <TableCell >Amount paid</TableCell>
             <TableCell >Total Amount</TableCell>
+            <TableCell >Summary</TableCell>
           </TableRow>
         </TableHead>
         { loader === true ?<div className="CenterSpinner"><Spinner /></div> :
@@ -57,6 +58,11 @@ export default function BasicTable() {
               <TableCell component='th' scope="row">{ row.status}</TableCell>
               <TableCell component='th' scope="row">{ row.balance}</TableCell>
               <TableCell component='th' scope="row">{ row.totalAmount}</TableCell> 
+              <TableCell component='th' scope="row">{row.products.map((prod)=>{
+                 return <div>
+                  {prod.count} of- {prod.name} @ {prod.price}
+                  </div>
+                })}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -111,6 +111,7 @@ const getProducts = () =>{
             <TableCell >Total</TableCell>
             <TableCell >State</TableCell>
             <TableCell >Paid</TableCell>
+            <TableCell >Summary</TableCell>
           </TableRow>
         </TableHead> 
         {(Object.keys(location.state.packages).length>0) &&
@@ -122,11 +123,16 @@ const getProducts = () =>{
                 className='packCellHover'
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-              <TableCell component='th' scope="row"  style={TableCellStyle}>
-              package-{index+1}</TableCell>
+              <TableCell component='th' scope="row"  style={TableCellStyle}>{row.name}
+              </TableCell>
                 <TableCell component='th' scope="row">{row.totalDue}</TableCell>
                 <TableCell component='th' scope="row">{row.status}</TableCell>
                 <TableCell component='th' scope="row">{row.balance}</TableCell>
+                <TableCell component='th' scope="row">{row.products.map((prod)=>{
+                 return <div>
+                  {prod}
+                  </div>
+                })}</TableCell>
               </TableRow>
             );
           })}

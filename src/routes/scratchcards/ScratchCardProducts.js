@@ -48,12 +48,20 @@ function ScratchCardProducts() {
     const [Available, SetAvailable] = useState(-1)
     const [Unavailable, SetUnvailable] = useState(-1)
     const [Available20, SetAvailable20] = useState(-1)
+    const [Available10, SetAvailable10] = useState(-1)
     const [Available50, SetAvailable50] = useState(-1)
+    const [Available2, SetAvailable2] = useState(-1)
+    const [Available1, SetAvailable1] = useState(-1)
+    const [Available5, SetAvailable5] = useState(-1)
     useEffect(() => {
         getAvailablecards();
         getUnAvailablecards();
         featuresSpacificCardCount("50000");
         featuresSpacificCardCount("20000");
+        featuresSpacificCardCount("10000");
+        featuresSpacificCardCount("5000");
+        featuresSpacificCardCount("2000");
+        featuresSpacificCardCount("1000");
      }, []);
  const getAvailablecards =()=>{
    axios
@@ -83,12 +91,36 @@ function ScratchCardProducts() {
     if(amount === "50000"){
         SetAvailable50(response.data.count)
     }
+    if(amount === "10000"){
+        SetAvailable10(response.data.count)
+    }
+    if(amount === "2000"){
+        SetAvailable2(response.data.count)
+    }
+    if(amount === "5000"){
+        SetAvailable5(response.data.count)
+    }
+    if(amount === "1000"){
+        SetAvailable1(response.data.count)
+    }
    }).catch((error) => {
     if(amount === "20000"){
         SetAvailable20('failed')
     }
     if(amount === "50000"){
         SetAvailable50('failed')
+    }
+    if(amount === "10000"){
+        SetAvailable10('failed')
+    }
+    if(amount === "2000"){
+        SetAvailable2('failed')
+    }
+    if(amount === "5000"){
+        SetAvailable5('failed')
+    }
+    if(amount === "1000"){
+        SetAvailable1('failed')
     }
    });
  }
@@ -131,12 +163,40 @@ const classes = useStyles()
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='50,000K (Available Cards)'
-                        value={Available20===-1?'loading':Available20}
+                        value={Available50===-1?'loading':Available50}
+                    />
+                    <MiniCardComponent
+                        className={classes.miniCardContainer}
+                        title='10,000K (Available Cards)'
+                        value={Available10===-1?'loading':Available10}
                     />
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='20,000K (Available Cards)'
-                        value={Available50===-1?'loading':Available50}
+                        value={Available20===-1?'loading':Available20}
+                    />
+                </Row>
+                <Row
+                    className={classes.cardRow}
+                    wrap
+                    flexGrow={1}
+                    horizontal='space-between'
+                    breakpoints={{ 384: 'column' }}
+                >
+                    <MiniCardComponent
+                        className={classes.miniCardContainer}
+                        title='5000K (Available Cards)'
+                        value={Available5===-1?'loading':Available5}
+                    />
+                    <MiniCardComponent
+                        className={classes.miniCardContainer}
+                        title='2000K (Available Cards)'
+                        value={Available2===-1?'loading':Available2}
+                    />
+                    <MiniCardComponent
+                        className={classes.miniCardContainer}
+                        title='1000K (Available Cards)'
+                        value={Available1===-1?'loading':Available1}
                     />
                 </Row>
             </Row>

@@ -184,3 +184,40 @@ body {
     line-height: 26px;
     color: #424147;
 }
+
+.fullWidth{
+   width: 95%;
+   margin-left: 5px;
+}
+.productsRender{
+    display: flex;
+    width:15rem;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: small;
+    padding: .3rem;
+
+}
+.numberSelector{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.slectedNumbers{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.errorMsg{
+    color: red;
+    font-size: small;
+    display: flex;
+    justify-content: center;
+}
+.HoverArror:hover{
+    font-size: 1.3rem;
+}
+:hover{
+    cursor: pointer;
+}

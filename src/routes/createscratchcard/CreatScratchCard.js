@@ -41,7 +41,7 @@ export default function SelectTextFields() {
   const [loader, setLoading] = React.useState(false);
   const [error,setError] = React.useState('')
   const [ cardNumbers , setNumberOfcard ]=React.useState("5");
-  const [cost,setCost]=React.useState("500");
+  const [cost,setCost]=React.useState("");
   const [cards,setCard] = React.useState([])
   const user = useSelector(selectUser);
 

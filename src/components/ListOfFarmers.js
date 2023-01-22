@@ -77,6 +77,7 @@ export default function AlertDialog() {
             <TableCell >Contact</TableCell>
             <TableCell >Location</TableCell>
             <TableCell >Products</TableCell>
+            <TableCell >Gender</TableCell>
             <TableCell >No of Packages</TableCell>
           </TableRow>
         </TableHead>         
@@ -94,6 +95,7 @@ export default function AlertDialog() {
                 <TableCell component='th' scope="row">{row.contact}</TableCell>
                 <TableCell component='th' scope="row">{row.location}</TableCell>
                 <TableCell component='th' scope="row">{row.farmProducts.join(',')}</TableCell>
+                <TableCell component='th' scope="row">{row.gender}</TableCell>
                 <TableCell component='th' 
                 className="hoverPackage"
                 onClick={()=>{handlepackagesView(row)}}
@@ -145,6 +147,7 @@ export default function AlertDialog() {
             <TableCell >Total</TableCell>
             <TableCell >State</TableCell>
             <TableCell >Paid</TableCell>
+            <TableCell >Summary</TableCell>
           </TableRow>
         </TableHead> 
         {(loader === false &&  Object.keys(selectedFarmer).length>0) &&
@@ -156,11 +159,16 @@ export default function AlertDialog() {
                 className='packCellHover'
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-              <TableCell component='th' scope="row"  style={TableCellStyle}>
-              package-{index+1}</TableCell>
+              <TableCell component='th' scope="row"  style={TableCellStyle}>{row.name}
+              </TableCell>
                 <TableCell component='th' scope="row">{row.totalDue}</TableCell>
                 <TableCell component='th' scope="row">{row.status}</TableCell>
                 <TableCell component='th' scope="row">{row.balance}</TableCell>
+                <TableCell component='th' scope="row">{row.products.map((prod)=>{
+                 return <div>
+                  {prod}
+                  </div>
+                })}</TableCell>
               </TableRow>
             );
           })}

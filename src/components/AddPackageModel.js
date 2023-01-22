@@ -9,6 +9,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { OutlinedInput } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -17,6 +19,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { useSelector } from 'react-redux';
 import { selectUser } from 'features/userSlice';
 import Spinner from './Spinner';
+import { fontSize } from '@mui/system';
 
 export default function ResponsiveDialog({products, prodError, farmerId}) {
   const [open, setOpen] = React.useState(false);
@@ -27,7 +30,10 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
   const user = useSelector(selectUser);
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-  const [packageName, setpackageName] = React.useState([]);
+  const [selectedProducts, setselectedProducts] = React.useState([]);
+  const [selectedProductsNames, setselectedProductNames] = React.useState([]);
+  const [total, setTotal] = React.useState(0);
+
   const handleClickOpen = () => {
     if(prodError!==''){
       alert("couldn't fetch products, please refreash") 
@@ -37,17 +43,47 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
       setOpen(true);
     }
   };
+  const handleCountModification = (action,index) =>{
+
+     let modifiableProducts =[...selectedProducts]
+     if(action === 'add'){
+      modifiableProducts[index].count = modifiableProducts[index].count + 1
+     }
+     if(action === 'sub' && (modifiableProducts[index].count - 1) > 0 ){
+      modifiableProducts[index].count = modifiableProducts[index].count - 1
+     }
+    
+     setselectedProducts(modifiableProducts)
+  }
   const handleChange = (event) => {
     const {
       target: { value }
     } = event;
-    setpackageName(
+    // create objects
+    let Value = value
+    if( typeof value === 'string'){
       // On autofill we get a the stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+     Value = value.split(",")
+    }
+    let productsObjArray =[] 
+    Value.forEach((element,index )=> {
+      productsObjArray.push({product:element, count:1})
+
+    });
+    setselectedProducts(productsObjArray);
+    setselectedProductNames(Value)
   };
-//   useEffect(() => {
-//  }, [products,prodError]);
+  React.useEffect(() => {
+    let total = 0
+    selectedProducts.forEach((obj)=>{
+       products.forEach(element => {
+        if(element.name === obj.product){
+          total += (element.unitPrice*obj.count)
+        }      
+       });
+    })
+    setTotal(total)
+  }, [selectedProducts,total]);
 
   const handleClose = () => {
     setOpen(false);
@@ -60,28 +96,42 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
   }
   const addPackages = () =>{
     setLoading(true)
-    let total = 0
-    let productsList = products.filter(prod => {
-      if(packageName.includes(prod.name)){
-        total += Number(prod.unitPrice)
-        return {
-          productID:prod._id,
-          name:prod.name,
-          price:prod.unitPrice
+    // let productsList = products.filter(prod => {
+    //   if(selectedProductsNames.includes(prod.name)){
+    //     return {
+    //       productID:prod._id,
+    //       name:prod.name,
+    //       price:prod.unitPrice
+    //     }
+    //   }
+    // });
+     let productList =[]
+     selectedProducts.forEach((obj,index)=>{
+       for(var i = 0; i < products.length; i++){
+        if(products[i].name === obj.product){
+           productList.push(
+            {
+              productID:products[i]._id,
+              name:products[i].name,
+              price:products[i].unitPrice,
+              count: obj.count
+            }
+           )
         }
-      }
-    });
+       }
+     })
+     console.log(productList)
     let packageData = {
       name,
       owner: farmerId,
       adderID: user.id,
-      products: productsList,
+      products: productList,
       totalAmount: total
     }
     axios
     .post(`/packages/add-package`,packageData)
     .then((response) => {
-      console.log(response.data.data)
+      // console.log(response.data.data)
       setLoading(false)
       window.location.href = "/dashboard"
     }).catch((error) => {
@@ -92,6 +142,7 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
 
   return (
     <div>
+      
       <Button variant="outlined" onClick={handleClickOpen}>
         Add Package
       </Button>
@@ -119,7 +170,6 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
           onChange={(e)=>{handleNameChange(e)}}
           value={name}
           label="Name"
-          defaultValue="Name"
         />
       </div>
       <div className='SelectionHolder'>
@@ -132,24 +182,39 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
           multiple
           label="Products"
           className='SelectMultipleField'
-          value={packageName}
+          value={selectedProductsNames}
           name="first"
           onChange={handleChange}
           input={<OutlinedInput label="Tag" />}
-          renderValue={(selected) => selected
-          // .map(obj=>{
-          //   products[(packageName.indexOf(obj))].name
-          // })
-          .join(",")}>
+          renderValue={(selected) => selected.join(",")}>
           {products.map((prod) => (
             <MenuItem className='menuItem' key={prod._id} value={prod.name}>
-              <Checkbox checked={packageName.indexOf(prod.name) > -1} />
-              <ListItemText primary={prod.name} />
+              <Checkbox checked={selectedProductsNames.indexOf(prod.name) > -1} />
+              <ListItemText primary={`${prod.name} @ ${prod.unitPrice}`} />
             </MenuItem>
           ))}
         </Select>
+        <div style={{fontSize:'1rem'}}>Total = UGX {total}</div>
+       <div>
+       {selectedProducts.map((prod,index) => (
+            <div key={index} className='productsRender'>
+               <div>{prod.product}</div>
+               <div className='numberSelector'>
+               <ArrowBackIosIcon className='HoverArror'  onClick={()=>
+               {handleCountModification('sub',index)}}
+                sx={{fontSize: '1rem'  }} fontSize='inherit'/>
+                <div className='slectedNumbers'>
+                {prod.count}
+                </div>
+               <ArrowForwardIosIcon className='HoverArror'  onClick={()=>
+               {handleCountModification('add',index)}}
+                 sx={{fontSize: '1rem' }} fontSize='inherit' />
+               </div>
+            </div>
+          ))}
+      </div> 
       </div>
-      {error && <div>
+      {error && <div className='errorMsg'>
         {error}
       </div>}
         </Box>
