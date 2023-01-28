@@ -52,6 +52,7 @@ function ScratchCardProducts() {
     const [Available50, SetAvailable50] = useState(-1)
     const [Available2, SetAvailable2] = useState(-1)
     const [Available1, SetAvailable1] = useState(-1)
+    const [Available_5, SetAvailable_5] = useState(-1)
     const [Available5, SetAvailable5] = useState(-1)
     useEffect(() => {
         getAvailablecards();
@@ -62,6 +63,7 @@ function ScratchCardProducts() {
         featuresSpacificCardCount("5000");
         featuresSpacificCardCount("2000");
         featuresSpacificCardCount("1000");
+        featuresSpacificCardCount("500");
      }, []);
  const getAvailablecards =()=>{
    axios
@@ -103,6 +105,9 @@ function ScratchCardProducts() {
     if(amount === "1000"){
         SetAvailable1(response.data.count)
     }
+    if(amount === "500"){
+        SetAvailable_5(response.data.count)
+    }
    }).catch((error) => {
     if(amount === "20000"){
         SetAvailable20('failed')
@@ -121,6 +126,9 @@ function ScratchCardProducts() {
     }
     if(amount === "1000"){
         SetAvailable1('failed')
+    }
+    if(amount === "500"){
+        SetAvailable_5('failed')
     }
    });
  }
@@ -152,6 +160,11 @@ const classes = useStyles()
                         title='Used Cards'
                         value={Unavailable===-1?'loading':Unavailable}
                     />
+                    <MiniCardComponent
+                        className={classes.miniCardContainer}
+                        title='50,000 (Available Cards)'
+                        value={Available50===-1?'loading':Available50}
+                    />
                 </Row>
                 <Row
                     className={classes.cardRow}
@@ -160,20 +173,21 @@ const classes = useStyles()
                     horizontal='space-between'
                     breakpoints={{ 384: 'column' }}
                 >
+                    
                     <MiniCardComponent
                         className={classes.miniCardContainer}
-                        title='50,000K (Available Cards)'
-                        value={Available50===-1?'loading':Available50}
-                    />
-                    <MiniCardComponent
-                        className={classes.miniCardContainer}
-                        title='10,000K (Available Cards)'
+                        title='10,000 (Available Cards)'
                         value={Available10===-1?'loading':Available10}
                     />
                     <MiniCardComponent
                         className={classes.miniCardContainer}
-                        title='20,000K (Available Cards)'
+                        title='20,000 (Available Cards)'
                         value={Available20===-1?'loading':Available20}
+                    />
+                    <MiniCardComponent
+                        className={classes.miniCardContainer}
+                        title='5000 (Available Cards)'
+                        value={Available5===-1?'loading':Available5}
                     />
                 </Row>
                 <Row
@@ -183,20 +197,21 @@ const classes = useStyles()
                     horizontal='space-between'
                     breakpoints={{ 384: 'column' }}
                 >
+                    
                     <MiniCardComponent
                         className={classes.miniCardContainer}
-                        title='5000K (Available Cards)'
-                        value={Available5===-1?'loading':Available5}
-                    />
-                    <MiniCardComponent
-                        className={classes.miniCardContainer}
-                        title='2000K (Available Cards)'
+                        title='2000 (Available Cards)'
                         value={Available2===-1?'loading':Available2}
                     />
                     <MiniCardComponent
                         className={classes.miniCardContainer}
-                        title='1000K (Available Cards)'
+                        title='1000 (Available Cards)'
                         value={Available1===-1?'loading':Available1}
+                    />
+                    <MiniCardComponent
+                        className={classes.miniCardContainer}
+                        title='500 (Available Cards)'
+                        value={Available_5===-1?'loading':Available_5}
                     />
                 </Row>
             </Row>
