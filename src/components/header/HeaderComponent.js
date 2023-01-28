@@ -110,10 +110,10 @@ function HeaderComponent() {
         <Row className={classes.container} vertical='center' horizontal='space-between'>
             <span className={classes.title}>{title}</span>
             <Row vertical='center'>
-                <div className={classes.iconStyles}>
+                {/* <div className={classes.iconStyles}>
                     <IconSearch />
-                </div>
-                <div className={classes.iconStyles}>
+                </div> */}
+                {/* <div className={classes.iconStyles}>
                     <DropdownComponent
                         label={<IconBell />}
                         options={[
@@ -139,7 +139,7 @@ function HeaderComponent() {
                             right: -14
                         }}
                     />
-                </div>
+                </div> */}
                 <div className={classes.separator}></div>
                 <DropdownComponent
                     label={

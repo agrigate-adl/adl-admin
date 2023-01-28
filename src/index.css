@@ -49,6 +49,24 @@ ol[class] {
 a:not([class]) {
     text-decoration-skip-ink: auto;
 }
+.SearchDiv{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+.DeleteButton{
+    background-color: red;
+    color:white;
+    padding: .4rem;
+    border-radius: 4px;
+    outline: none;
+}
+.errorTxt{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* Make images easier to work with */
 img {
@@ -162,7 +180,7 @@ select {
     flex-direction: column;
     background: #ceffda;
     height: 60px;
-    padding:2px;
+    padding:5px;
     border: 1px dotted black;
 }
 /* Remove all animations and transitions for people that prefer not to see them */

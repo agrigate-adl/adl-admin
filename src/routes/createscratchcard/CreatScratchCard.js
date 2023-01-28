@@ -11,7 +11,7 @@ import { selectUser } from 'features/userSlice';
 import Spinner from '../../components/Spinner';
 import axios from '../../axios'
 
-const currencies = [
+const cardLists = [
   {
     value: "1",
     label: '1',
@@ -31,6 +31,34 @@ const currencies = [
   {
     value: "50",
     label: '50',
+  },
+  {
+    value: "100",
+    label: '100',
+  },
+  {
+    value: "150",
+    label: '150',
+  },
+  {
+    value: "200",
+    label: '200',
+  },
+  {
+    value: "250",
+    label: '250',
+  },
+  {
+    value: "300",
+    label: '300',
+  },
+  {
+    value: "350",
+    label: '350',
+  },
+  {
+    value: "400",
+    label: '400',
   },
 ];
 
@@ -60,15 +88,17 @@ export default function SelectTextFields() {
       count:cardNumbers,
       amount:cost
     }
+    console.log(obj)
     axios
     .post(`/cards/print-newcards`,obj)
     .then((response) => {
-       console.log(response.data.data)
+       //console.log(response.data.data)
       setLoading(false)
       setCard(response.data.data)
      // window.location.href = "/scratchCards"
      //PrintCards()
     }).catch((error) => {
+     // console.log(error)
       setError("something went wrong")
       setLoading(false)
     });
@@ -100,7 +130,7 @@ export default function SelectTextFields() {
           helperText="Please select your Number of Scratch Card"
           variant="standard"
         >
-          {currencies.map((option) => (
+          {cardLists.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>
@@ -125,7 +155,9 @@ export default function SelectTextFields() {
          Create & Print
         </Button> 
      }
+      <div style={{gap:'1rem'}}>
      {cards.length>0 &&<ComponentToPrint cards={cards} ref={compRef}/>}
+     </div>
     </Box>
     </>
   );

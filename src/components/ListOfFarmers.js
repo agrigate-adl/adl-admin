@@ -2,17 +2,22 @@ import React, { useState,useEffect } from 'react';
 import axios from './../axios'
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import Spinner from './Spinner';
+import {IconSearch } from 'assets/icons';
+import TextField from '@mui/material/TextField';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import DialogActions from '@mui/material/DialogActions';
 import SLUGS from'../resources/slugs'
 import { useHistory  } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import { convertSlugToUrl } from 'resources/utilities';
 const TableCellStyle = {
     cursor: 'pointer'
@@ -22,7 +27,11 @@ export default function AlertDialog() {
   
   const [farmers,setFarmers] = useState([])
   const [loader,setLoading] = useState(false)
-  const [error,setError] = useState(false)
+  const [deleting,setDeleting] = useState(false)
+  const [error,setError] = useState("")
+  const [searchWord,setSearchWord] = useState('')
+  const [delOpen,setDelOpen] = useState(false)
+  const [delError,setDelError] = useState('')
   const [selectedFarmer, setSelectedFarmer] = useState({})
 
   let { push } = useHistory();
@@ -32,7 +41,11 @@ export default function AlertDialog() {
   useEffect(() => {
     fetchFarmers();
  }, []);
+
+ 
+
  const fetchFarmers = () =>{
+   
    setLoading(true);
    axios
    .get(`/farmer`)
@@ -46,13 +59,41 @@ export default function AlertDialog() {
    });
  }
 
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
+ const DeleteFarmer = () =>{
+  setDeleting(true);
+  axios
+  .delete(`/farmer/${selectedFarmer._id}`)
+  .then((response) => {
+    // console.log(response)
+    setDeleting(false);
+    handleDelclose()
+    fetchFarmers()
+  }).catch((error) => {
+    setDelError("failed to delete farmer")
+    setDeleting(false);
+  });
+}
 
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
+ const getSearchFarmers = () =>{
+  if(searchWord !== ""){
+  setLoading(true);
+  axios
+  .post(`/farmer/search-farmer`,{word: searchWord})
+  .then((response) => {
+    if (response.data.data !== undefined){
+    setFarmers(response.data.data)
+    } else {
+      setError("No results for this search")
+    }
+    setLoading(false);
+  }).catch((error) => {
+    setError("something went wrong")
+    setLoading(false);
+  });
+}
+}
+
+
   function onFarmerClick(slug,farmer) {
     push(convertSlugToUrl(slug,{}),farmer);
   }
@@ -66,30 +107,65 @@ export default function AlertDialog() {
   const handlepackagesClose = () =>{
     setOpenPackages(false);
   }
+  const handleDelopen = (farmer) =>{
+    setSelectedFarmer(farmer)
+    setDelOpen(true);
+  }
+  const handleDelclose = () =>{
+    setDelOpen(false);
+  }
 
   return (
     <div>
+      
+      <div className='SearchDiv'>
+        <TextField
+          required
+          id="outlined-required"
+          label="Deep Search"
+          placeholder='Name of contact'
+          onChange={(e)=>{
+            setSearchWord(e.target.value) 
+            setError('')
+            if(e.target.value ===''){
+              fetchFarmers()
+            }
+          }}
+          value={searchWord}
+        />
+        <div
+        style={{
+            cursor: 'pointer',
+            marginLeft: 25,
+        }}
+        onClick={()=>{getSearchFarmers()}}
+        > <IconSearch />
+        </div>
+        </div>
       <TableContainer component={Paper}>
+        
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
+          <TableCell>Farmer No.</TableCell>
             <TableCell>Name</TableCell>
             <TableCell >Contact</TableCell>
             <TableCell >Location</TableCell>
             <TableCell >Products</TableCell>
             <TableCell >Gender</TableCell>
             <TableCell >No of Packages</TableCell>
+            <TableCell >Action</TableCell>
           </TableRow>
         </TableHead>         
         { loader === true ?<div className="CenterSpinner"><Spinner /></div> :
         <TableBody>
-          {farmers.map((row) => {
+          {(farmers.length > 0 && error==="" ) ?  farmers?.map((row,index) => {
             return (
               <TableRow
-                key={row.name}
+                key={index}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-              
+                <TableCell component='th' scope="row">{row.number}</TableCell>
               <TableCell component='th' scope="row" onClick={() => onFarmerClick(SLUGS.farmer,row)} style={TableCellStyle}>
               {row.name}</TableCell>
                 <TableCell component='th' scope="row">{row.contact}</TableCell>
@@ -100,35 +176,49 @@ export default function AlertDialog() {
                 className="hoverPackage"
                 onClick={()=>{handlepackagesView(row)}}
                 scope="row">{row.packages.length}</TableCell>
-
+                <TableCell component='th' scope="row"><button 
+                onClick={()=>{handleDelopen(row)}}
+                className='DeleteButton'>
+                  Delete
+                  </button>
+                </TableCell>
               </TableRow>
             );
-          })}
+          }):null}
         </TableBody>
         }
-
+        {error && <div className="CenterSpinner">{error}</div>}
       </Table>
     </TableContainer>
     
-      {/* <Dialog
-        open={open}
-        onClose={handleClose}
+      <Dialog
+        open={delOpen}
+        onClose={handleDelclose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Farmer's Details"}
+          {"Confirm this action?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
+            Are you sure you want to delete: {selectedFarmer.name}
           </DialogContentText>
         </DialogContent>
+
         <DialogActions>
-          <Button  onClick={() => onClick(SLUGS.addpackage)}>Add package</Button>
+          <Button  onClick={() => {handleDelclose()} }>Cancel</Button>
+        
+          <Button  onClick={() => {DeleteFarmer()}}>
+           {deleting?<Spinner/>: 'Delete'}
+          </Button>
         </DialogActions>
-      </Dialog> */}
+        {delError && <div className="errorTxt" style={{
+          color:'red'
+        }} >
+            {delError}
+        </div>}
+      </Dialog>
       <Dialog
         open={openPackages}
         onClose={handlepackagesClose}
