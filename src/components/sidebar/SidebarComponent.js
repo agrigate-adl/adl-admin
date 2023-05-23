@@ -13,7 +13,7 @@ import Menu from './MenuComponent';
 import MenuItem from './MenuItemComponent';
 import {useDispatch} from 'react-redux';
 import { logout } from 'features/userSlice';
-import { CardMembership, ContactMailRounded, ContactMailSharp, Home, Payment } from '@material-ui/icons';
+import { CardMembership, ContactMailRounded, ContactMailSharp, Home,Payment, Message } from '@material-ui/icons';
 
 const useStyles = createUseStyles({
     separator: {
@@ -75,8 +75,14 @@ function SidebarComponent() {
                 onClick={() => onClick(SLUGS.transactions)}
             />
             <MenuItem
+                id={SLUGS.bulkSms}
+                title='Send Messages'
+                icon={Message}
+                onClick={() => onClick(SLUGS.bulkSms)}
+            />
+            <MenuItem
                 id={SLUGS.scratchCards}
-                items={[SLUGS.scratchCardsTwo, SLUGS.scratchCardsThree]}
+                items={[SLUGS.scratchCardsTwo, SLUGS.scratchCardsTwo]}
                 title='Scratch Cards'
                 icon={CardMembership}
             >

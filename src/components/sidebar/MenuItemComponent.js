@@ -71,7 +71,7 @@ MenuItemComponent.defaultProps = {};
 
 MenuItemComponent.propTypes = {
     children: any,
-    icon: func | Object,
+    icon: any,
     id: string,
     onClick: func,
     items: arrayOf(string),

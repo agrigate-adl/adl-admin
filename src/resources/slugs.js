@@ -6,13 +6,13 @@ export default {
     productsThree: '/products/three',
     transactions: '/transactions',
     scratchCards: '/scratchCards',
-    scratchCardsTwo: '/scratchCards/two',
-    scratchCardsThree: '/scratchCards/three',
+    scratchCardsTwo: '/addCards/',
     packages: '/packages',
     contacts: '/contacts',
-    addpackage:'/addpackage',
-    farmer:'/farmer',
+    addpackage: '/addpackage',
+    farmer: '/farmer',
     login: '/login',
     signup: '/signup',
-    forgotPassword: '/forgot_password'
+    forgotPassword: '/forgot_password',
+    bulkSms: '/sms'
 };

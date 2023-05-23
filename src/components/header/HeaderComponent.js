@@ -5,7 +5,7 @@ import { Row } from 'simple-flexbox';
 import { createUseStyles, useTheme } from 'react-jss';
 import { SidebarContext } from 'hooks/useSidebar';
 import SLUGS from 'resources/slugs';
-import { IconBell, IconSearch } from 'assets/icons';
+// import { IconBell, IconSearch } from 'assets/icons';
 import Avatar from 'components/Avatar';
 import DropdownComponent from 'components/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
@@ -88,11 +88,16 @@ function HeaderComponent() {
         case currentItem === SLUGS.contacts:
             title = 'Support Contacts';
             break;
+        case currentItem === SLUGS.bulkSms:
+            title = 'Broadcast messages';
+            break;
+        case currentItem === SLUGS.scratchCardsTwo:
+            title = 'Add new cards';
+            break;
         case currentItem === SLUGS.packages:  
              title ='Packages' 
              break;
              case currentItem === SLUGS.farmer:  
-             
              title ='Farmer Page' 
              
              break;    

@@ -2,14 +2,18 @@ import React, { Suspense, lazy } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import SLUGS from 'resources/slugs';
 import LoadingComponent from 'components/loading';
-import CreateScratchCard from './createscratchcard';
+//import CreateScratchCard from './createscratchcard';
 import ScratchCardProducts from './scratchcards';
 import Packages from './packages';
 import FarmerPage from './farmer';
 import AddPackage from './addpackage';
+// import BulkSms from './bulkSms';
 const Transactions = lazy(()=> import('../routes/transactions'))
 const DashboardComponent = lazy(() => import('./dashboard'));
 const Products =lazy(()=> import('./products'));
+const BulkSms =lazy(()=> import('./bulkSms'));
+
+const CreateScratchCard =lazy(()=> import('./createscratchcard'));
 
 function PrivateRoutes() {
     return (
@@ -23,6 +27,7 @@ function PrivateRoutes() {
                 <Route exact path={SLUGS.transactions} component={Transactions} />
                 <Route exact path={SLUGS.scratchCardsTwo} component={CreateScratchCard} />
                 <Route exact path={SLUGS.scratchCards}  component={ScratchCardProducts}/>
+                <Route exact path={SLUGS.bulkSms}  component={BulkSms}/>
                 <Route exact path={SLUGS.contacts} render={() => <div>contacts</div>} />
                 <Redirect to={SLUGS.dashboard} />
             </Switch>

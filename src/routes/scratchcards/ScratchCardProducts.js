@@ -1,9 +1,8 @@
-
-import React,{useEffect,useState} from 'react';
-import {  Row } from 'simple-flexbox';
+import React, { useEffect, useState } from 'react';
+import { Row } from 'simple-flexbox';
 import { createUseStyles } from 'react-jss';
 import MiniCardComponent from 'components/cards/MiniCardComponent';
-import axios from '../../axios'
+import axios from '../../axios';
 const useStyles = createUseStyles({
     cardsContainer: {
         marginRight: -30,
@@ -43,100 +42,106 @@ const useStyles = createUseStyles({
     }
 });
 
-
-function ScratchCardProducts() {
-    const [Available, SetAvailable] = useState(-1)
-    const [Unavailable, SetUnvailable] = useState(-1)
-    const [Available20, SetAvailable20] = useState(-1)
-    const [Available10, SetAvailable10] = useState(-1)
-    const [Available50, SetAvailable50] = useState(-1)
-    const [Available2, SetAvailable2] = useState(-1)
-    const [Available1, SetAvailable1] = useState(-1)
-    const [Available_5, SetAvailable_5] = useState(-1)
-    const [Available5, SetAvailable5] = useState(-1)
+export default function ScratchCardProducts() {
+    const [Available, SetAvailable] = useState(-1);
+    const [Unavailable, SetUnvailable] = useState(-1);
+    const [Available20, SetAvailable20] = useState(-1);
+    const [Available10, SetAvailable10] = useState(-1);
+    const [Available50, SetAvailable50] = useState(-1);
+    const [Available2, SetAvailable2] = useState(-1);
+    const [Available1, SetAvailable1] = useState(-1);
+    const [Available_5, SetAvailable_5] = useState(-1);
+    const [Available5, SetAvailable5] = useState(-1);
     useEffect(() => {
-        getAvailablecards();
-        getUnAvailablecards();
-        featuresSpacificCardCount("50000");
-        featuresSpacificCardCount("20000");
-        featuresSpacificCardCount("10000");
-        featuresSpacificCardCount("5000");
-        featuresSpacificCardCount("2000");
-        featuresSpacificCardCount("1000");
-        featuresSpacificCardCount("500");
-     }, []);
- const getAvailablecards =()=>{
-   axios
-   .post(`/cards/available`,{cardAmount:""})
-   .then((response) => {
-    SetAvailable(response.data.count[0].count)
-   }).catch((error) => {
-    SetAvailable("failed")
-   });
- }
- const getUnAvailablecards =()=>{
-   axios
-   .post(`/cards/unavailable`,{cardAmount:""})
-   .then((response) => {
-    SetUnvailable(response.data.count[0].count)
-   }).catch((error) => {
-    SetUnvailable("failed")
-   });
- }
- const featuresSpacificCardCount = (amount) =>{
-   axios
-   .post(`/cards/available`,{cardAmount:amount})
-   .then((response) => {
-    if(amount === "20000"){
-        SetAvailable20(response.data.count)
-    }
-    if(amount === "50000"){
-        SetAvailable50(response.data.count)
-    }
-    if(amount === "10000"){
-        SetAvailable10(response.data.count)
-    }
-    if(amount === "2000"){
-        SetAvailable2(response.data.count)
-    }
-    if(amount === "5000"){
-        SetAvailable5(response.data.count)
-    }
-    if(amount === "1000"){
-        SetAvailable1(response.data.count)
-    }
-    if(amount === "500"){
-        SetAvailable_5(response.data.count)
-    }
-   }).catch((error) => {
-    if(amount === "20000"){
-        SetAvailable20('failed')
-    }
-    if(amount === "50000"){
-        SetAvailable50('failed')
-    }
-    if(amount === "10000"){
-        SetAvailable10('failed')
-    }
-    if(amount === "2000"){
-        SetAvailable2('failed')
-    }
-    if(amount === "5000"){
-        SetAvailable5('failed')
-    }
-    if(amount === "1000"){
-        SetAvailable1('failed')
-    }
-    if(amount === "500"){
-        SetAvailable_5('failed')
-    }
-   });
- }
+        async function fetchData() {
+            await getAvailablecards();
+            getUnAvailablecards();
+            featuresSpacificCardCount('50000');
+            featuresSpacificCardCount('20000');
+            featuresSpacificCardCount('10000');
+            featuresSpacificCardCount('5000');
+            featuresSpacificCardCount('2000');
+            featuresSpacificCardCount('1000');
+            featuresSpacificCardCount('500');
+          }
+       fetchData()
+    }, []);
 
-const classes = useStyles()
-  return (
-    <div>
-         <Row
+    const getAvailablecards = () => {
+        axios
+            .post(`/cards/available`, { cardAmount: '' })
+            .then((response) => {
+                SetAvailable(response.data.count[0].count);
+            })
+            .catch((error) => {
+                SetAvailable('failed');
+            });
+    };
+    const getUnAvailablecards = () => {
+        axios
+            .post(`/cards/unavailable`, { cardAmount: '' })
+            .then((response) => {
+                SetUnvailable(response.data.count[0].count);
+            })
+            .catch((error) => {
+                SetUnvailable('failed');
+            });
+    };
+    const featuresSpacificCardCount = (amount) => {
+        axios
+            .post(`/cards/available`, { cardAmount: amount })
+            .then((response) => {
+                if (amount === '20000') {
+                    SetAvailable20(response.data.count);
+                }
+                if (amount === '50000') {
+                    SetAvailable50(response.data.count);
+                }
+                if (amount === '10000') {
+                    SetAvailable10(response.data.count);
+                }
+                if (amount === '2000') {
+                    SetAvailable2(response.data.count);
+                }
+                if (amount === '5000') {
+                    SetAvailable5(response.data.count);
+                }
+                if (amount === '1000') {
+                    SetAvailable1(response.data.count);
+                }
+                if (amount === '500') {
+                    SetAvailable_5(response.data.count);
+                }
+            })
+            .catch((error) => {
+                if (amount === '20000') {
+                    SetAvailable20('failed');
+                }
+                if (amount === '50000') {
+                    SetAvailable50('failed');
+                }
+                if (amount === '10000') {
+                    SetAvailable10('failed');
+                }
+                if (amount === '2000') {
+                    SetAvailable2('failed');
+                }
+                if (amount === '5000') {
+                    SetAvailable5('failed');
+                }
+                if (amount === '1000') {
+                    SetAvailable1('failed');
+                }
+                if (amount === '500') {
+                    SetAvailable_5('failed');
+                }
+            });
+    };
+
+    const classes = useStyles();
+    return (
+        <div>
+            <Row
                 className={classes.cardsContainer}
                 wrap
                 flexGrow={1}
@@ -153,17 +158,17 @@ const classes = useStyles()
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='Unsed Cards '
-                        value={Available===-1?'loading':Available}
+                        value={Available === -1 ? 'loading' : Available}
                     />
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='Used Cards'
-                        value={Unavailable===-1?'loading':Unavailable}
+                        value={Unavailable === -1 ? 'loading' : Unavailable}
                     />
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='50,000 (Available Cards)'
-                        value={Available50===-1?'loading':Available50}
+                        value={Available50 === -1 ? 'loading' : Available50}
                     />
                 </Row>
                 <Row
@@ -173,21 +178,20 @@ const classes = useStyles()
                     horizontal='space-between'
                     breakpoints={{ 384: 'column' }}
                 >
-                    
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='10,000 (Available Cards)'
-                        value={Available10===-1?'loading':Available10}
+                        value={Available10 === -1 ? 'loading' : Available10}
                     />
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='20,000 (Available Cards)'
-                        value={Available20===-1?'loading':Available20}
+                        value={Available20 === -1 ? 'loading' : Available20}
                     />
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='5000 (Available Cards)'
-                        value={Available5===-1?'loading':Available5}
+                        value={Available5 === -1 ? 'loading' : Available5}
                     />
                 </Row>
                 <Row
@@ -197,28 +201,23 @@ const classes = useStyles()
                     horizontal='space-between'
                     breakpoints={{ 384: 'column' }}
                 >
-                    
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='2000 (Available Cards)'
-                        value={Available2===-1?'loading':Available2}
+                        value={Available2 === -1 ? 'loading' : Available2}
                     />
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='1000 (Available Cards)'
-                        value={Available1===-1?'loading':Available1}
+                        value={Available1 === -1 ? 'loading' : Available1}
                     />
                     <MiniCardComponent
                         className={classes.miniCardContainer}
                         title='500 (Available Cards)'
-                        value={Available_5===-1?'loading':Available_5}
+                        value={Available_5 === -1 ? 'loading' : Available_5}
                     />
                 </Row>
             </Row>
-  
-        
-    </div>
-  )
+        </div>
+    );
 }
-
-export default ScratchCardProducts
