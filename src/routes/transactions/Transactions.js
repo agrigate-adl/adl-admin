@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,12 +18,14 @@ import { Row } from 'simple-flexbox';
 import { useReactToPrint } from 'react-to-print';
 import MiniCardComponent from 'components/cards/MiniCardComponent';
 
+
 const TableCellStyle = {
     cursor: 'pointer'
 };
 
 export default function BasicTable() {
     const [stati, setStati] = React.useState(false);
+    const compRef = useRef()
     const [error, setError] = React.useState(false);
     const [errorPack, setErrorPack] = React.useState(false);
     const [openPackages, setOpenPackages] = React.useState(false);
@@ -162,23 +164,14 @@ export default function BasicTable() {
         return totalAmount;
     };
 
+    const PrintComponent = useReactToPrint({
+        content: () =>compRef.current
+    });
+
     const classes = useStyles();
     return (
         <div className={classes.holderCard}>
-              {transactions.length > 0 && <Row
-                  className={classes.cardRow}
-                  wrap
-                  flexGrow={1}
-                  horizontal='space-between'
-                  breakpoints={{ 384: 'column' }}
-              >  
-                  <MiniCardComponent
-                      className={classes.miniCardContainer}
-                      title={"Total accumulated"}
-                      value={`${computeTotalAmount(transactions).toLocaleString('en-US')} UGX`}
-                  />
-              </Row>
-              }
+             
               <div className='SearchDiv'>
                 <TextField
                     required
@@ -203,8 +196,29 @@ export default function BasicTable() {
                     <IconSearch />
                 </div>
             </div>
-
-            <TableContainer component={Paper}>
+            <button onClick={()=>{
+               PrintComponent()
+            }}
+            style={{width:'20rem'}}
+            >
+                Print transactions
+            </button>
+            <div ref={compRef} >
+            {transactions.length > 0 && <Row
+                  className={classes.cardRow}
+                  wrap
+                  flexGrow={1}
+                  horizontal='space-between'
+                  breakpoints={{ 384: 'column' }}
+              >  
+                  <MiniCardComponent
+                      className={classes.miniCardContainer}
+                      title={"Total accumulated"}
+                      value={`${computeTotalAmount(transactions).toLocaleString('en-US')} UGX`}
+                  />
+              </Row>
+              }
+            <TableContainer  component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label='simple table'>
                     <TableHead>
                         <TableRow>
@@ -265,6 +279,7 @@ export default function BasicTable() {
                     )}
                 </Table>
             </TableContainer>
+            </div>
             <Dialog
                 open={openPackages}
                 onClose={handlepackagesClose}
@@ -341,3 +356,4 @@ export default function BasicTable() {
         </div>
     );
 }
+

@@ -88,7 +88,7 @@ export default function SelectTextFields() {
       count:cardNumbers,
       amount:cost
     }
-    console.log(obj)
+   // console.log(obj)
     axios
     .post(`/cards/print-newcards`,obj)
     .then((response) => {

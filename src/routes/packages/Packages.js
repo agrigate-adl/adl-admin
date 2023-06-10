@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React,{useRef} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,10 +10,12 @@ import TextField from '@mui/material/TextField';
 import Spinner from '../../components/Spinner';
 import axios from '../../axios';
 import { Row } from 'simple-flexbox';
+import { useReactToPrint } from 'react-to-print';
 import MiniCardComponent from 'components/cards/MiniCardComponent';
 
 export default function BasicTable() {
     const [error, setError] = React.useState(false);
+    const compRef = useRef()
     const [loader, setLoading] = React.useState(false);
     const [searchWord, setSearchWord] = React.useState('');
     const [totalPackages, setTotalPackages] = React.useState(0);
@@ -64,10 +66,35 @@ export default function BasicTable() {
       setTotalPackages(totalAmount)
       setTotalDebt(totalAmount-totalAmountPaid);
     };
-
+     
+    const PrintUserPackages = useReactToPrint({
+        content: () =>compRef.current
+      })
 
     return (
         <>
+            
+            <div className='SearchDiv'>
+                <TextField
+                    required
+                    id='outlined-required'
+                    label='Search packages'
+                    placeholder='package name'
+                    onChange={(e) => {
+                        setSearchWord(e.target.value);
+                        searchFunction(e.target.value);
+                    }}
+                    value={searchWord}
+                />
+            </div>
+            <button onClick={()=>{
+               PrintUserPackages()
+            }}
+            style={{width:'20rem', marginBottom:'1rem'}}
+            >
+                Print Packages
+            </button>
+            <div ref={compRef}>
             {packages.length > 0 && (
                 <Row
                     className={{
@@ -120,20 +147,6 @@ export default function BasicTable() {
                     />
                 </Row>
             )}
-            <div className='SearchDiv'>
-                <TextField
-                    required
-                    id='outlined-required'
-                    label='Search packages'
-                    placeholder='package name'
-                    onChange={(e) => {
-                        setSearchWord(e.target.value);
-                        searchFunction(e.target.value);
-                    }}
-                    value={searchWord}
-                />
-            </div>
-
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label='simple table'>
                     <TableHead>
@@ -226,6 +239,7 @@ export default function BasicTable() {
                     )}
                 </Table>
             </TableContainer>
+            </div>
         </>
     );
 }
