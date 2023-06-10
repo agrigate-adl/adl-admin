@@ -1,1 +1,2 @@
-This is the ADL admin portal
+This is the ADL (agrigate) admin portal
+
