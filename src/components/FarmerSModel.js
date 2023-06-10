@@ -156,8 +156,8 @@ export default function ResponsiveDialog() {
                                   setGender(e.target.value)
                                 }}
                                  >
-                                <MenuItem value={'female'}>female</MenuItem>
-                                <MenuItem value={'male'}>male</MenuItem>
+                                <MenuItem value={'female'}>Female</MenuItem>
+                                <MenuItem value={'male'}>Male</MenuItem>
                             </Select>
                         </div>
                     </Box>

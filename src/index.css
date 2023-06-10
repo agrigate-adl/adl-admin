@@ -53,6 +53,7 @@ a:not([class]) {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 1rem;
+    margin-top: .5rem;
     align-items: center;
 }
 .DeleteButton{
@@ -158,6 +159,20 @@ select {
 .SelectMultipleField{
     width: 18rem;
 }
+.SelectMultipleFieldSms{
+    width: 100%;
+    margin-top: 1rem;
+}
+.Tabs{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2rem;
+}
+.active{
+    background-color: #ccc;
+}
+
 .menuItem{
     font-size: 12px;  
 }
@@ -225,6 +240,11 @@ body {
 .slectedNumbers{
     padding-left: 5px;
     padding-right: 5px;
+}
+.SmsPage{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
 }
 
 .errorMsg{

@@ -3,11 +3,15 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 // import MenuItem from '@mui/material/MenuItem';
 import { Button } from '@mui/material';
-
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Checkbox from "@material-ui/core/Checkbox";
+import Select from "@material-ui/core/Select";
 // import { useSelector } from 'react-redux';
 // import { selectUser } from 'features/userSlice';
 import Spinner from '../../components/Spinner';
 import axios from '../../axios';
+import { OutlinedInput } from "@material-ui/core";
 
 export default function BulkSms() {
     const [loader, setLoading] = React.useState(false);
@@ -15,16 +19,44 @@ export default function BulkSms() {
     const [message, setMessage] = React.useState('');
     const [feedBack, setFeedBack] = React.useState('');
     const [recipients, setRecipients] = React.useState([]);
+    const [activeTab, setActiveTab] = React.useState('all'); 
+    const [farmers, setFarmers] = React.useState([]);
+    const [selectedFarmers, setSelectedFarmers] = React.useState([]);
+    const [selectedFarmersNos, setSelectedFarmersNos] = React.useState([]);
 
-    //const user = useSelector(selectUser);
+    // Fetch farmers on component mount
+    React.useEffect(() => {
+        fetchFarmers();
+    }, []);
+
+    // Function to fetch farmers
+    const fetchFarmers = () => {
+        //setLoading(true);
+        axios
+            .get(`/farmer`)
+            .then((response) => {
+                setFarmers(response.data.data);
+             //   setLoading(false);
+            })
+            .catch((error) => {
+                setError('Something went wrong');
+            //    setLoading(false);
+            });
+    };
 
     const handleCardsSubmit = () => {
         if (message !== '') {
             setLoading(true);
+            let selected = false
+            let farmerNos = []
+            if(activeTab === 'selected' ){
+                selected = true
+                farmerNos = selectedFarmers.map((farmer) => farmer.contact);
+            }
             axios
-                .post(`/ussd/v1/bulk-sms`, { message: message })
+                .post(`/ussd/v1/bulk-sms`, { farmers:farmerNos, selected:selected, message: message })
                 .then((response) => {
-                    console.log(response.data.data.SMSMessageData.Message)
+                   // console.log(response.data.data.SMSMessageData.Message);
                     setLoading(false);
                     setError('');
                     setFeedBack(response.data.data.SMSMessageData.Message);
@@ -40,9 +72,30 @@ export default function BulkSms() {
             alert('Message can not be blank');
         }
     };
+    const handleChange = (event) => {
+        const {
+          target: { value }
+        } = event;
+        // create objects
+        let Value = value
+        if( typeof value === 'string'){
+          // On autofill we get a the stringified value.
+         Value = value.split(",")
+        }
+        let farmerObjs =[] 
+        Value.forEach((name,index )=> {
+            for(var n = 0; n<farmers.length; n++){
+                if(name === farmers[n].name){
+                    farmerObjs.push(farmers[n])
+                }
+            }
+        });
+        setSelectedFarmers(farmerObjs);
+        setSelectedFarmersNos(Value)
+      };
 
     return (
-        <>
+        <div className='SmsPage'>
             <Box
                 component='form'
                 sx={{
@@ -51,7 +104,6 @@ export default function BulkSms() {
                 noValidate
                 autoComplete='off'
             >
-                <div></div>
                 <div>
                     <TextField
                         helperText='Type the message you would want to send'
@@ -70,11 +122,12 @@ export default function BulkSms() {
                         }}
                     />
                 </div>
+
                 {loader === true ? (
                     <Spinner />
                 ) : (
                     <Button onClick={handleCardsSubmit} variant='outlined' style={{ height: 50 }}>
-                        {'Send to all farmers'}
+                        {'Send'}
                     </Button>
                 )}
                 {error && (
@@ -105,7 +158,7 @@ export default function BulkSms() {
                         {feedBack}
                     </div>
                 )}
-                {recipients.length >0 &&
+                {recipients.length > 0 && (
                     <div>
                         {recipients.map((item, index) => (
                             <div key={index}>
@@ -122,8 +175,63 @@ export default function BulkSms() {
                             </div>
                         ))}
                     </div>
-                }
+                )}
             </Box>
-        </>
+            <div>
+                <div className='Tabs'>
+                    <button
+                        className={activeTab === 'all' ? 'active' : ''}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setActiveTab('all');
+                        }}
+                    >
+                        Send to All Farmers
+                    </button>
+                    <button
+                        className={activeTab === 'selected' ? 'active' : ''}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setActiveTab('selected');
+                        }}
+                    >
+                        Send to Selected Farmers
+                    </button>
+                </div>
+                {activeTab === 'selected' && farmers.length > 0 && (
+                    <div>
+                        {/* <select>
+                            {farmers.map((farmer) => (
+                                <option key={farmer.id} value={farmer.number}>
+                                    {farmer.name} - {farmer.number}
+                                </option>
+                            ))}
+                        </select> */}
+
+                        <Select
+                            labelId='demo-mutiple-checkbox-label'
+                            id='demo-mutiple-checkbox'
+                            multiple
+                            label='farmers'
+                            placeholder='Farmer 1, 2'
+                            className='SelectMultipleFieldSms'
+                            value={selectedFarmersNos}
+                            onChange={handleChange}
+                            input={<OutlinedInput label='Tag' />}
+                            renderValue={(selected) => selected.join(',')}
+                        >
+                            {farmers.map((farm) => (
+                                <MenuItem className='menuItem' key={farm._id} value={farm.name}>
+                                    <Checkbox
+                                        checked={selectedFarmersNos.indexOf(farm.name) > -1}
+                                    />
+                                    <ListItemText primary={`${farm.name}`} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </div>
+                )}
+            </div>
+        </div>
     );
 }

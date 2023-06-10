@@ -42,7 +42,6 @@ export default function AlertDialog() {
     fetchFarmers();
  }, []);
 
- 
 
  const fetchFarmers = () =>{
    
@@ -75,22 +74,42 @@ export default function AlertDialog() {
 }
 
  const getSearchFarmers = () =>{
-  if(searchWord !== ""){
-  setLoading(true);
-  axios
-  .post(`/farmer/search-farmer`,{word: searchWord})
-  .then((response) => {
-    if (response.data.data !== undefined){
-    setFarmers(response.data.data)
-    } else {
-      setError("No results for this search")
-    }
-    setLoading(false);
-  }).catch((error) => {
-    setError("something went wrong")
-    setLoading(false);
+//   if(searchWord !== ""){
+//   setLoading(true);
+//   axios
+//   .post(`/farmer/search-farmer`,{word: searchWord})
+//   .then((response) => {
+//     if (response.data.data !== undefined){
+//     setFarmers(response.data.data)
+//     } else {
+//       setError("No results for this search")
+//     }
+//     setLoading(false);
+//   }).catch((error) => {
+//     setError("something went wrong")
+//     setLoading(false);
+//   });
+// }
+if (searchWord !== '' &&  farmers.length > 0) {
+  const filteredFarmers = farmers.filter((farmer) => {
+    // Perform case-insensitive search on the farmer's name or contact
+    const farmerName = farmer.name.toLowerCase();
+    const farmerContact = farmer.contact.toLowerCase();
+    const searchTerm = searchWord.toLowerCase();
+    return farmerName.includes(searchTerm) || farmerContact.includes(searchTerm);
   });
-}
+
+  if (filteredFarmers.length > 0) {
+    setFarmers(filteredFarmers);
+    setError('');
+  } else {
+    setError('No results for this search');
+  }
+} else {
+  setFarmers(farmers);
+  setError('');
+}  
+
 }
 
 
@@ -171,7 +190,7 @@ export default function AlertDialog() {
                 <TableCell component='th' scope="row">{row.contact}</TableCell>
                 <TableCell component='th' scope="row">{row.location}</TableCell>
                 <TableCell component='th' scope="row">{row.farmProducts.join(',')}</TableCell>
-                <TableCell component='th' scope="row">{row.gender}</TableCell>
+                <TableCell component='th' scope="row">{row.gender.charAt(0).toUpperCase() + row.gender.slice(1)}</TableCell>
                 <TableCell component='th' 
                 className="hoverPackage"
                 onClick={()=>{handlepackagesView(row)}}
