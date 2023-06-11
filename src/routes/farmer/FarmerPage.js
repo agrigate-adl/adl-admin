@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useRef} from 'react';
 import Accordion from '@mui/material/Accordion';
 import axios from '../../axios'
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -14,6 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useReactToPrint } from 'react-to-print';
 const TableCellStyle = {
   cursor: 'pointer'
 }
@@ -22,6 +23,7 @@ const TableCellStyle = {
 export default function ControlledAccordions() {
 const [expanded, setExpanded] = React.useState(false);
 const [products, setProducts] = React.useState([]);
+const compRef = useRef()
 const [prodError, setProdError] = React.useState('')
 
 const location = useLocation();
@@ -43,6 +45,9 @@ const getProducts = () =>{
     setProdError("something went wrong")
   });
 }
+const PrintComponent = useReactToPrint({
+  content: () =>compRef.current
+});
   
   
   return (
@@ -103,7 +108,15 @@ const getProducts = () =>{
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-          <TableContainer component={Paper}>
+          <button onClick={()=>{
+               PrintComponent()
+            }}
+            style={{width:'13rem'}}
+            >
+                Print Packages
+            </button>
+          <TableContainer ref={compRef} component={Paper}>
+          <div style={{paddingLeft: '20px'}} >Packages for {location.state.name}</div>
       <Table  aria-label="simple table">
         <TableHead>
           <TableRow>
