@@ -68,11 +68,24 @@ function SidebarComponent() {
                     onClick={() => onClick(SLUGS.packages)}
                 />
             
+                <MenuItem
+                id={SLUGS.transactions}
+                title='Payments'
+                icon={Payment}
+                onClick={() => onClick(SLUGS.payoutCash)}
+            />
             <MenuItem
                 id={SLUGS.transactions}
                 title='Transactions'
                 icon={Payment}
                 onClick={() => onClick(SLUGS.transactions)}
+            />
+
+            <MenuItem
+                id={SLUGS.individualSavingStatement}
+                title='Statements'
+                icon={Payment}
+                onClick={() => onClick(SLUGS.individualSavingStatement)}
             />
             <MenuItem
                 id={SLUGS.bulkSms}

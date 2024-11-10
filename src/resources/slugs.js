@@ -1,3 +1,5 @@
+
+
 export default {
     // private
     dashboard: '/dashboard',
@@ -10,6 +12,8 @@ export default {
     packages: '/packages',
     contacts: '/contacts',
     addpackage: '/addpackage',
+    payoutCash: '/payoutcash',
+    individualSavingStatement: '/individualSavingStatement',
     farmer: '/farmer',
     login: '/login',
     signup: '/signup',
