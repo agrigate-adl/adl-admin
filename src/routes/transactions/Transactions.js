@@ -19,6 +19,7 @@ import { createUseStyles } from 'react-jss';
 import { Row } from 'simple-flexbox';
 import { useReactToPrint } from 'react-to-print';
 import MiniCardComponent from 'components/cards/MiniCardComponent';
+import { formatNumber } from 'config';
 
 const TableCellStyle = { cursor: 'pointer' };
 
@@ -144,27 +145,30 @@ export default function BasicTable() {
     const classes = useStyles();
 
     return (
-        <div className={classes.holderCard}>
-            <div className='SearchDiv'>
+        <div  className={classes.holderCard}>
+            
+            <div style={{ width: "40%" }} className='SearchDiv'>
                 <TextField
                     required
                     id='outlined-required'
                     label='Search transactions'
+                    sx={{
+                        width: "100%",
+                    }}
                     placeholder='Id, name, contact, amount, or packageId'
                     onChange={(e) => setSearchWord(e.target.value)}
                     value={searchWord}
                 />
-                <div
-                    style={{ cursor: 'pointer', marginLeft: 25 }}
-                    onClick={searchFunction}
-                >
-                    <IconSearch />
-                </div>
+
             </div>
-            <button onClick={PrintComponent} style={{ width: '20rem' }}>
+
+            <button onClick={PrintComponent} style={{ width: '15rem', padding: 5, borderRadius: "8px" }}>
                 Print transactions
             </button>
-            <div ref={compRef}>
+
+            <div ref={compRef} style={{
+                marginBottom : 5
+            }}>
                 {filteredTransactions.length > 0 && (
                     <Row className={classes.cardRow} wrap flexGrow={1} horizontal='space-between'>
                         <MiniCardComponent
@@ -174,6 +178,19 @@ export default function BasicTable() {
                         />
                     </Row>
                 )}
+
+            </div>
+
+
+            {stati ? (
+                <div style={{
+                    width: "100%",
+                    flex: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                }}  className='CenterSpinner'><Spinner size='big' /></div>
+            ) : (
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label='simple table'>
                         <TableHead>
@@ -186,34 +203,35 @@ export default function BasicTable() {
                                 <TableCell align='right' style={{ color: 'blue' }}>Package ID</TableCell>
                             </TableRow>
                         </TableHead>
-                        {stati ? (
-                            <div className='CenterSpinner'><Spinner /></div>
-                        ) : (
-                            <TableBody>
-                                {filteredTransactions.map((row, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell>{index + 1}</TableCell>
-                                        <TableCell>{row.payee?.name}</TableCell>
-                                        <TableCell>{row.payee?.contact}</TableCell>
-                                        <TableCell align='center'>
-                                            {new Date(row.createdAt).toLocaleString('en-US')}
-                                        </TableCell>
-                                        <TableCell align='center'>{row.amount}</TableCell>
-                                        <TableCell
-                                            align='right'
-                                            onClick={() => handlePackagesView(row.package)}
-                                            style={{ color: 'blue' }}
-                                        >
-                                            {row.package}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                                {error && <div className='CenterSpinner'>{error}</div>}
-                            </TableBody>
-                        )}
+
+                        <TableBody>
+                            {filteredTransactions.map((row, index) => (
+                                <TableRow key={index}>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{row.payee?.name}</TableCell>
+                                    <TableCell>{row.payee?.contact}</TableCell>
+                                    <TableCell align='center'>
+                                        {new Date(row.createdAt).toLocaleString('en-US')}
+                                    </TableCell>
+                                    <TableCell align='center'>{formatNumber(row.amount)}</TableCell>
+                                    <TableCell
+                                        align='right'
+                                        onClick={() => handlePackagesView(row.package)}
+                                        style={{ color: 'blue' }}
+                                    >
+                                        {row.package}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                            {error && <div className='CenterSpinner'>{error}</div>}
+                        </TableBody>
+
                     </Table>
                 </TableContainer>
-            </div>
+
+            )}
+
+
             <Dialog open={openPackages} onClose={handlePackagesClose}>
                 {loader ? (
                     <div className='CenterSpinner'><Spinner /></div>

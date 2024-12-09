@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -21,7 +21,7 @@ import { selectUser } from 'features/userSlice';
 import Spinner from './Spinner';
 import { fontSize } from '@mui/system';
 
-export default function ResponsiveDialog({products, prodError, farmerId}) {
+export default function ResponsiveDialog({ products, prodError, farmerId }) {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [name, setName] = React.useState('');
@@ -35,25 +35,25 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
   const [total, setTotal] = React.useState(0);
 
   const handleClickOpen = () => {
-    if(prodError!==''){
-      alert("couldn't fetch products, please refreash") 
-    }else if(products.length < 1){
+    if (prodError !== '') {
+      alert("couldn't fetch products, please refreash")
+    } else if (products.length < 1) {
       alert("please wait as products are loading")
-    }else{
+    } else {
       setOpen(true);
     }
   };
-  const handleCountModification = (action,index) =>{
+  const handleCountModification = (action, index) => {
 
-     let modifiableProducts =[...selectedProducts]
-     if(action === 'add'){
+    let modifiableProducts = [...selectedProducts]
+    if (action === 'add') {
       modifiableProducts[index].count = modifiableProducts[index].count + 1
-     }
-     if(action === 'sub' && (modifiableProducts[index].count - 1) > 0 ){
+    }
+    if (action === 'sub' && (modifiableProducts[index].count - 1) > 0) {
       modifiableProducts[index].count = modifiableProducts[index].count - 1
-     }
-    
-     setselectedProducts(modifiableProducts)
+    }
+
+    setselectedProducts(modifiableProducts)
   }
   const handleChange = (event) => {
     const {
@@ -61,13 +61,13 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
     } = event;
     // create objects
     let Value = value
-    if( typeof value === 'string'){
+    if (typeof value === 'string') {
       // On autofill we get a the stringified value.
-     Value = value.split(",")
+      Value = value.split(",")
     }
-    let productsObjArray =[] 
-    Value.forEach((element,index )=> {
-      productsObjArray.push({product:element, count:1})
+    let productsObjArray = []
+    Value.forEach((element, index) => {
+      productsObjArray.push({ product: element, count: 1 })
 
     });
     setselectedProducts(productsObjArray);
@@ -75,26 +75,26 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
   };
   React.useEffect(() => {
     let total = 0
-    selectedProducts.forEach((obj)=>{
-       products.forEach(element => {
-        if(element.name === obj.product){
-          total += (element.unitPrice*obj.count)
-        }      
-       });
+    selectedProducts.forEach((obj) => {
+      products.forEach(element => {
+        if (element.name === obj.product) {
+          total += (element.unitPrice * obj.count)
+        }
+      });
     })
     setTotal(total)
-  }, [selectedProducts,total]);
+  }, [selectedProducts, total]);
 
   const handleClose = () => {
     setOpen(false);
   };
-  const handleNameChange=(e)=>{
+  const handleNameChange = (e) => {
     const {
       target: { value }
     } = e;
     setName(value)
   }
-  const addPackages = () =>{
+  const addPackages = () => {
     setLoading(true)
     // let productsList = products.filter(prod => {
     //   if(selectedProductsNames.includes(prod.name)){
@@ -105,22 +105,22 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
     //     }
     //   }
     // });
-     let productList =[]
-     selectedProducts.forEach((obj,index)=>{
-       for(var i = 0; i < products.length; i++){
-        if(products[i].name === obj.product){
-           productList.push(
+    let productList = []
+    selectedProducts.forEach((obj, index) => {
+      for (var i = 0; i < products.length; i++) {
+        if (products[i].name === obj.product) {
+          productList.push(
             {
-              productID:products[i]._id,
-              name:products[i].name,
-              price:products[i].unitPrice,
+              productID: products[i]._id,
+              name: products[i].name,
+              price: products[i].unitPrice,
               count: obj.count
             }
-           )
+          )
         }
-       }
-     })
-     console.log(productList)
+      }
+    })
+    console.log(productList)
     let packageData = {
       name,
       owner: farmerId,
@@ -129,20 +129,20 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
       totalAmount: total
     }
     axios
-    .post(`/packages/add-package`,packageData)
-    .then((response) => {
-      // console.log(response.data.data)
-      setLoading(false)
-      window.location.href = "/dashboard"
-    }).catch((error) => {
-      setError("something went wrong")
-      setLoading(false)
-    });
+      .post(`/packages/add-package`, packageData)
+      .then((response) => {
+        // console.log(response.data.data)
+        setLoading(false)
+        window.location.href = "/dashboard"
+      }).catch((error) => {
+        setError("something went wrong")
+        setLoading(false)
+      });
   }
 
   return (
     <div>
-      
+
       <Button variant="outlined" onClick={handleClickOpen}>
         Add Package
       </Button>
@@ -156,77 +156,75 @@ export default function ResponsiveDialog({products, prodError, farmerId}) {
           {"Add Package   "}
         </DialogTitle>
         <DialogContent>
-        <Box
-        component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off">
-      <div>
-      <TextField
-          required
-          id="outlined-required"
-          onChange={(e)=>{handleNameChange(e)}}
-          value={name}
-          label="Name"
-        />
-      </div>
-      <div className='SelectionHolder'>
-      <label>
-          Select Products
-      </label>
-        <Select
-          labelId="demo-mutiple-checkbox-label"
-          id="demo-mutiple-checkbox"
-          multiple
-          label="Products"
-          className='SelectMultipleField'
-          value={selectedProductsNames}
-          name="first"
-          onChange={handleChange}
-          input={<OutlinedInput label="Tag" />}
-          renderValue={(selected) => selected.join(",")}>
-          {products.map((prod) => (
-            <MenuItem className='menuItem' key={prod._id} value={prod.name}>
-              <Checkbox checked={selectedProductsNames.indexOf(prod.name) > -1} />
-              <ListItemText primary={`${prod.name} @ ${prod.unitPrice}`} />
-            </MenuItem>
-          ))}
-        </Select>
-        <div style={{fontSize:'1rem'}}>Total = UGX {total}</div>
-       <div>
-       {selectedProducts.map((prod,index) => (
-            <div key={index} className='productsRender'>
-               <div>{prod.product}</div>
-               <div className='numberSelector'>
-               <ArrowBackIosIcon className='HoverArror'  onClick={()=>
-               {handleCountModification('sub',index)}}
-                sx={{fontSize: '1rem'  }} fontSize='inherit'/>
-                <div className='slectedNumbers'>
-                {prod.count}
-                </div>
-               <ArrowForwardIosIcon className='HoverArror'  onClick={()=>
-               {handleCountModification('add',index)}}
-                 sx={{fontSize: '1rem' }} fontSize='inherit' />
-               </div>
+          <Box
+            component="form"
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '25ch' },
+            }}
+            noValidate
+            autoComplete="off">
+            <div>
+              <TextField
+                required
+                id="outlined-required"
+                onChange={(e) => { handleNameChange(e) }}
+                value={name}
+                label="Name"
+              />
             </div>
-          ))}
-      </div> 
-      </div>
-      {error && <div className='errorMsg'>
-        {error}
-      </div>}
-        </Box>
+            <div className='SelectionHolder'>
+              <label>
+                Select Products
+              </label>
+              <Select
+                labelId="demo-mutiple-checkbox-label"
+                id="demo-mutiple-checkbox"
+                multiple
+                label="Products"
+                className='SelectMultipleField'
+                value={selectedProductsNames}
+                name="first"
+                onChange={handleChange}
+                input={<OutlinedInput label="Tag" />}
+                renderValue={(selected) => selected.join(",")}>
+                {products.map((prod) => (
+                  <MenuItem className='menuItem' key={prod._id} value={prod.name}>
+                    <Checkbox checked={selectedProductsNames.indexOf(prod.name) > -1} />
+                    <ListItemText primary={`${prod.name} @ ${prod.unitPrice}`} />
+                  </MenuItem>
+                ))}
+              </Select>
+              <div style={{ fontSize: '1rem' }}>Total = UGX {total}</div>
+              <div>
+                {selectedProducts.map((prod, index) => (
+                  <div key={index} className='productsRender'>
+                    <div>{prod.product}</div>
+                    <div className='numberSelector'>
+                      <ArrowBackIosIcon className='HoverArror' onClick={() => { handleCountModification('sub', index) }}
+                        sx={{ fontSize: '1rem' }} fontSize='inherit' />
+                      <div className='slectedNumbers'>
+                        {prod.count}
+                      </div>
+                      <ArrowForwardIosIcon className='HoverArror' onClick={() => { handleCountModification('add', index) }}
+                        sx={{ fontSize: '1rem' }} fontSize='inherit' />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {error && <div className='errorMsg'>
+              {error}
+            </div>}
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Cancel
           </Button>
-          {loading===true? <Spinner/> :
-          <Button onClick={addPackages} autoFocus>
-            Save
-          </Button>}
+          {loading === true ? <Spinner /> :
+            <Button onClick={addPackages} autoFocus>
+              Save
+            </Button>}
         </DialogActions>
       </Dialog>
     </div>

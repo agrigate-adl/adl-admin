@@ -294,10 +294,14 @@ export default function ScratchCardProducts() {
                     />
                 </Row>
             </Row>
+
             <h1 style={{ marginTop: 20, marginBottom: 10 }}>Add exact card number</h1>
-            <div className='SearchDiv'>
+            <div style={{ marginTop: 20, marginBottom: 10 , width: "50%" }} className='SearchDiv'>
                 <TextField
                     required
+                    sx= {{
+                        width : "40%"
+                    }}
                     id='outlined-required'
                     label='Card search'
                     placeholder='Exact card number'

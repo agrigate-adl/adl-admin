@@ -1,15 +1,14 @@
 import React, {useRef,useEffect} from 'react';
-
 import { useReactToPrint } from 'react-to-print';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from '@mui/material';
-
 import { useSelector } from 'react-redux';
 import { selectUser } from 'features/userSlice';
 import Spinner from '../../components/Spinner';
 import axios from '../../axios'
+import { formatNumber } from 'config';
 
 const cardLists = [
   {
@@ -169,7 +168,7 @@ export const ComponentToPrint = React.forwardRef((props,ref) => {
       {props.cards.map((item,index)=>(
         <div key={index} className='SingleCard'>
           <div style={{backgroundColor:'#fff', color:'#000'}}>Dail: {item.cardNumber}</div>
-          <div style={{color:'#csolor'}}>Worth, {item.amount} Ugx</div>
+          <div style={{color:'#csolor'}}>Worth, {formatNumber(item.amount)} Ugx</div>
         </div>
       ))
       }

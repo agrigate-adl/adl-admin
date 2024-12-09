@@ -3,6 +3,7 @@
 export default {
     // private
     dashboard: '/dashboard',
+    agents: '/agents',
     products: '/products',
     productsTwo: '/products/two',
     productsThree: '/products/three',
@@ -12,6 +13,7 @@ export default {
     packages: '/packages',
     contacts: '/contacts',
     addpackage: '/addpackage',
+    analytics: '/analytics',
     payoutCash: '/payoutcash',
     individualSavingStatement: '/individualSavingStatement',
     farmer: '/farmer',

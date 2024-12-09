@@ -1,29 +1,42 @@
 import React, { useState } from 'react';
 import { Box, Button, Container, TextField, Typography, Grid, Paper } from '@mui/material';
-import axios from 'axios';
+import axios from '../../axios';
+import Spinner from 'components/Spinner';
+
 
 const IndividualSavingStatement = () => {
-  const [userId, setUserId] = useState('');
+  const [isLoading , setIsLoading] = useState(false);
+  const [selectedContact, setSelectedContact] = useState('');
   const [statement, setStatement] = useState(null);
   const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
-    setUserId(e.target.value);
+    setSelectedContact(e.target.value);
   };
 
   const handleRetrieveStatement = async () => {
-    if (!userId) {
-      setError("Please enter a valid User ID.");
+
+    if (!selectedContact) {
+      setError("Please enter a valid contact.");
       return;
     }
     setError('');
-    
+
+    setIsLoading(true);
+
+    const standardisedContact = '0' + selectedContact.slice(-9);
+
     try {
-      // Replace with actual API endpoint
-      const response = await axios.get(`/api/statements/${userId}`);
-      setStatement(response.data);
+
+     const { data : userData } = await axios.get(`/farmer/users/${standardisedContact}`);
+      // Replace with actual API endpoint ..
+      const { data : statementData }= await axios.get(`/api/statements/${userData.data?._id}`);
+      setStatement(statementData?.data);
+      setIsLoading(false);
+
     } catch (err) {
-      setError('Unable to retrieve statement. Please check the User ID or try again later.');
+      setIsLoading(false);
+      setError('Statement with this contact does not exist the system. Please check the provided contact or try again later.');
       setStatement(null);
     }
   };
@@ -34,28 +47,33 @@ const IndividualSavingStatement = () => {
         <Typography variant="h5" component="h1" gutterBottom>
           Retrieve Individual Saving Statement
         </Typography>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} md={8}>
+        <Grid container spacing={2} direction="column">
+          <Grid item xs={12}>
             <TextField
               fullWidth
-              label="User ID"
+              label="Contact"
               variant="outlined"
-              value={userId}
+              value={selectedContact}
               onChange={handleInputChange}
               required
             />
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12}>
             <Button
               variant="contained"
               color="primary"
               fullWidth
               onClick={handleRetrieveStatement}
             >
-              Retrieve Statement
+              { isLoading && <Spinner />}
+              <span style={{
+                 marginLeft : 5
+              }}>Retrieve Statement</span>
+          
             </Button>
           </Grid>
         </Grid>
+
         {error && (
           <Typography color="error" sx={{ mt: 2 }}>
             {error}
