@@ -1,9 +1,9 @@
 import React from 'react';
 import { Column, Row } from 'simple-flexbox';
 import { createUseStyles } from 'react-jss';
-
 import Model from '../../components/FarmerSModel'
- import ListOfFarmers from'../../components/ListOfFarmers'
+import ListOfFarmers from'../../components/ListOfFarmers'
+
 const useStyles = createUseStyles({
     cardsContainer: {
         marginRight: -30,

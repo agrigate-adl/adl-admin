@@ -3,6 +3,8 @@ import { Row } from 'simple-flexbox';
 import { createUseStyles, useTheme } from 'react-jss';
 import { IconLogo } from 'assets/icons';
 import  Colorlogowithbackground  from 'assets/icons/Colorlogo-nobackground.png';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'features/userSlice';
 
 
 const useStyles = createUseStyles((theme) => ({
@@ -20,6 +22,7 @@ const useStyles = createUseStyles((theme) => ({
 
 function LogoComponent() {
     const theme = useTheme();
+    const user = useSelector(selectUser);
     const classes = useStyles({ theme });
     return (
         <Row className={classes.container} horizontal='center' vertical='center'>
@@ -29,7 +32,7 @@ function LogoComponent() {
             height={100}
             >
             </img>
-            <span className={classes.title}>ADL Admin</span>
+            <span className={classes.title}>ADL { user.role === 'admin' ? "Admin" : user.role === "agent" ? "Agent" : ""}</span>
         </Row>
     );
 }

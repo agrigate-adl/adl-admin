@@ -24,6 +24,7 @@
         "react-scripts": "^5.0.1",
         "react-svg-line-chart": "^2.0.1",
         "react-to-print": "^2.14.10",
+        "recharts": "^2.13.3",
         "redux-persist": "^6.0.0",
         "simple-flexbox": "^2.3.1"
     },
