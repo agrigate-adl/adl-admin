@@ -23,7 +23,7 @@ export default function ResponsiveDialog() {
     const [phone, setPhone] = React.useState('');
     const [location, setLocation] = React.useState('');
     const [products, setProducts] = React.useState('');
-    const [gender, setGender] = React.useState('female')
+    const [gender, setGender] = React.useState('female');
     const [loading, setLoading] = React.useState(false);
     const user = useSelector(selectUser);
 
@@ -37,6 +37,7 @@ export default function ResponsiveDialog() {
     const handleClose = () => {
         setOpen(false);
     };
+
     const handleSubmit = () => {
         setLoading(true);
         if (name !== '' && phone !== '' && location !== '' && products !== '') {
@@ -50,116 +51,94 @@ export default function ResponsiveDialog() {
                 adderID: user.id
             };
             axios
-                .post(`/farmer/add-farmer `, obj)
+                .post(`/farmer/add-farmer`, obj)
                 .then((response) => {
-                    // console.log(response.data.data)
                     setLoading(false);
                     window.location.href = '/dashboard';
                 })
                 .catch((error) => {
-                    setError('something went wrong');
+                    setError('Something went wrong');
                     setLoading(false);
                 });
         } else {
-            alert('All field must be filled');
+            alert('All fields must be filled');
         }
     };
 
     return (
         <div>
-            <Button variant='outlined' onClick={handleClickOpen}>
+            <Button variant="outlined" onClick={handleClickOpen}>
                 Add Farmer
             </Button>
             <Dialog
                 fullScreen={fullScreen}
                 open={open}
                 onClose={handleClose}
-                aria-labelledby='responsive-dialog-title'
+                aria-labelledby="responsive-dialog-title"
+                sx={{height: '80vh', width: '25rem'}}
             >
-                <DialogTitle id='responsive-dialog-title'>{'Add Farmer Here '}</DialogTitle>
+                <DialogTitle id="responsive-dialog-title">{"Add Farmer Here"}</DialogTitle>
                 <DialogContent>
                     <Box
-                        component='form'
+                        component="form"
                         sx={{
-                            '& .MuiTextField-root': { m: 1, width: '25ch' }
+                            '& .MuiTextField-root': {
+                                m: 1,
+                                width: '100%',
+                            },
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 2,
+                            
                         }}
                         noValidate
-                        autoComplete='off'
+                        autoComplete="off"
                     >
-                        <div>
-                            <TextField
-                                required
-                                id='outlined-required'
-                                label='Name'
-                                name='name'
-                                value={name}
-                                onChange={(e) => {
-                                    setName(e.target.value);
-                                }}
-                                defaultValue='Name'
-                            />
-                        </div>
-                        <div>
-                            <TextField
-                                required
-                                id='outlined-required'
-                                label='Phone'
-                                name='phone'
-                                value={phone}
-                                onChange={(e) => {
-                                    setPhone(e.target.value);
-                                }}
-                                defaultValue='Phone Number'
-                            />
-                        </div>
-                        <div>
-                            <TextField
-                                required
-                                id='outlined-required'
-                                name='location'
-                                value={location}
-                                label='Location'
-                                onChange={(e) => {
-                                    setLocation(e.target.value);
-                                }}
-                                defaultValue="Farmer's Location"
-                            />
-                        </div>
-                        <div>
-                            <TextField
-                                required
-                                id='outlined-required'
-                                label='Products'
-                                name='products'
-                                value={products}
-                                onChange={(e) => {
-                                    setProducts(e.target.value);
-                                }}
-                                defaultValue='package Name'
-                            />
-                        </div>
-                        <div>
-                        <InputLabel id="demo-simple-select-label"
-                        sx={{
-                          'marginLeft' : '10px'
-                        }}
-                        >gender</InputLabel>
-                            <Select
-                                required
-                                labelId='demo-simple-select-label'
-                                id='demo-simple-select'
-                                className='fullWidth'
-                                value={gender}
-                                label='gender'
-                                name='gender'
-                                onChange={(e)=>{
-                                  setGender(e.target.value)
-                                }}
-                                 >
-                                <MenuItem value={'female'}>Female</MenuItem>
-                                <MenuItem value={'male'}>Male</MenuItem>
-                            </Select>
-                        </div>
+                        <TextField
+                            required
+                            id="outlined-required"
+                            label="Name"
+                            name="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <TextField
+                            required
+                            id="outlined-required"
+                            label="Phone"
+                            name="phone"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                        />
+                        <TextField
+                            required
+                            id="outlined-required"
+                            label="Location"
+                            name="location"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                        />
+                        <TextField
+                            required
+                            id="outlined-required"
+                            label="Products"
+                            name="products"
+                            value={products}
+                            onChange={(e) => setProducts(e.target.value)}
+                        />
+                        <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                        <Select
+                            required
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={gender}
+                            label="Gender"
+                            onChange={(e) => setGender(e.target.value)}
+                            sx={{ width: '100%' }}
+                        >
+                            <MenuItem value="female">Female</MenuItem>
+                            <MenuItem value="male">Male</MenuItem>
+                        </Select>
                     </Box>
                     {error && <div>{error}</div>}
                 </DialogContent>

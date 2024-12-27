@@ -4,6 +4,10 @@
     "private": true,
     "homepage": "",
     "dependencies": {
+        "@capacitor/android": "^6.2.0",
+        "@capacitor/cli": "^6.2.0",
+        "@capacitor/core": "^6.2.0",
+        "@capacitor/ios": "^6.2.0",
         "@emotion/react": "^11.10.5",
         "@emotion/styled": "^11.10.5",
         "@heroicons/react": "^2.0.13",

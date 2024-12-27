@@ -151,6 +151,7 @@ export default function ResponsiveDialog({ products, prodError, farmerId }) {
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
+        sx={{height: '80vh', width: '25rem'}}
       >
         <DialogTitle id="responsive-dialog-title">
           {"Add Package   "}
