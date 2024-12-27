@@ -20,10 +20,12 @@ import { Row } from 'simple-flexbox';
 import { useReactToPrint } from 'react-to-print';
 import MiniCardComponent from 'components/cards/MiniCardComponent';
 import { formatNumber } from 'config';
+import { useDispatch } from "react-redux";
+import { setPackageData, setPackageError } from "../../features/packageSlice";
 
 const TableCellStyle = { cursor: 'pointer' };
-
 export default function BasicTable() {
+    const dispatch = useDispatch();
     const [stati, setStati] = React.useState(false);
     const compRef = useRef();
     const [error, setError] = React.useState(false);
@@ -67,15 +69,26 @@ export default function BasicTable() {
     const handlePackagesClose = () => setOpenPackages(false);
 
     const fetchPackage = (id) => {
+        
         setLoader(true);
         axios
             .get(`/packages/${id}`)
             .then((response) => {
-                setPackaged(response.data.data);
+            const packageData = response.data.data;
+                setPackaged(packageData);
+               
+                console.log('data is coming.....',response.data.data)
+                localStorage.setItem('packageData', JSON.stringify(packageData))
+
+                const storedData = JSON.parse(localStorage.getItem('packageData'));
+
+                console.log('storedData', storedData);
+
                 setLoader(false);
             })
             .catch(() => {
-                setErrorPack('Something went wrong');
+                 const errormessage ='Something went wrong';
+               dispatch(setPackageError(errormessage))
                 setLoader(false);
             });
     };
@@ -104,13 +117,16 @@ export default function BasicTable() {
     }, [searchWord, transactions]);
 
     const fetchTransactions = useCallback(() => {
+        
         setStati(true);
         axios
             .get(`/transactions`)
             .then((response) => {
                 const sortedData = sortRecords(response.data.data);
                 setTransactions(sortedData);
+                console.log('data is coming.....',response.data.data)
                 setFilteredTransactions(sortedData);
+                dispatch( setPackageData(sortedData));
                 setStati(false);
             })
             .catch(() => {

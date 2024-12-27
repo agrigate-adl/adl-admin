@@ -35,6 +35,7 @@ export default function BasicTable() {
     const [delOpen, setDelOpen] = React.useState(false);
     const [selectedPackage, setSelectedPackage] = React.useState({});
     const [updatedName, setUpdatedName] = React.useState("");
+    const [updatedAmount, setUpdatedAmount] = React.useState("");
     const [updateError, setUpdateError] = React.useState('');
     const [searchPacks, setSearchPacks] = React.useState([]);
     const theme = useTheme();
@@ -54,6 +55,7 @@ export default function BasicTable() {
             .then((response) => {
                 setPackages(response.data.data);
                 setLoading(false);
+                console.log(response.data.data);
             })
             .catch((error) => {
                 setError('something went wrong');
@@ -91,6 +93,7 @@ export default function BasicTable() {
     const handleDelopen = (selectedPackage) => {
         setSelectedPackage(selectedPackage);
         setUpdatedName(selectedPackage.name);
+        setUpdatedAmount(selectedPackage.balance);
         setDelOpen(true);
     }
 
@@ -367,46 +370,42 @@ export default function BasicTable() {
 
                 )}
 
-                <Dialog
-                    open={delOpen}
-                    onClose={handleDelclose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id='responsive-dialog-title'>{'Update Package '}</DialogTitle>
+                <Dialog open={delOpen} onClose={handleDelclose} fullScreen={fullScreen}>
+    <DialogTitle>Edit Package</DialogTitle>
+    <DialogContent>
+        <DialogContentText>
+            Update the details of the selected package.
+        </DialogContentText>
+        <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Name"
+            type="text"
+            fullWidth
+            value={updatedName}
+            onChange={(e) => setUpdatedName(e.target.value)}
+        />
+        <TextField
+            margin="dense"
+            id="amount"
+            label="Amount Paid"
+            type="number"
+            fullWidth
+            value={updatedAmount}
+            onChange={(e) => setUpdatedAmount(e.target.value)}
+        />
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleDelclose} color="primary">
+            Cancel
+        </Button>
+        <Button onClick={handleUpdatePackage} color="primary" disabled={editing}>
+            {editing ? "Updating..." : "Update"}
+        </Button>
+    </DialogActions>
+</Dialog>
 
-                    <div style={{
-                        width: "100%",
-                        paddingLeft: 10,
-                        paddingRight: 10
-                    }}>
-                        <TextField
-                            required
-                            id='outlined-required'
-                            label='Name'
-                            name='name'
-                            value={updatedName}
-                            onChange={(e) => {
-                                setUpdatedName(e.target.value);
-                            }}
-                            defaultValue='Name'
-                        />
-                    </div>
-
-                    <DialogActions>
-                        <Button onClick={() => { handleDelclose() }}>Cancel</Button>
-
-                        <Button onClick={handleUpdatePackage} >
-                            {editing ? <Spinner /> : 'Edit'}
-                        </Button>
-                    </DialogActions>
-
-                    {updateError && <div className="errorTxt" style={{
-                        color: 'red'
-                    }} >
-                        {updateError}
-                    </div>}
-                </Dialog>
 
 
 
