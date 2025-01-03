@@ -90,7 +90,7 @@ function SidebarComponent() {
             }
 
             {
-                (user.role === 'admin' || user.role === 'agent') && (<MenuItem
+                (user.role === 'admin' ) && (<MenuItem
                     id={SLUGS.packages}
                     title='Packages'
                     icon={ContactMailSharp}
@@ -161,7 +161,7 @@ function SidebarComponent() {
             }
 
             {
-                user.role === 'admin' && (<MenuItem
+                (user.role === 'admin' || user.role === 'agent') && (<MenuItem
                     id={SLUGS.contacts}
                     title='Support Contacts'
                     icon={IconContacts}

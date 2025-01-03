@@ -61,7 +61,7 @@ export default function AlertDialog() {
         setFarmers(response.data.data)
         setLoading(false);
       }).catch((error) => {
-        setError("something went wrong")
+        setError(user.role ? "No farmers added yet" : "something went wrong")
         setLoading(false);
       });
   }
