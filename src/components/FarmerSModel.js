@@ -29,6 +29,7 @@ export default function ResponsiveDialog() {
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -75,7 +76,9 @@ export default function ResponsiveDialog() {
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="responsive-dialog-title"
-                sx={{height: '80vh', width: '25rem'}}
+
+                sx={{height:  '80vh', width: isSmallScreen ? '25rem': '100%'}}
+
             >
                 <DialogTitle id="responsive-dialog-title">{"Add Farmer Here"}</DialogTitle>
                 <DialogContent>

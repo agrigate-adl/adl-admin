@@ -90,14 +90,14 @@ function SidebarComponent() {
             }
 
             {
-                (user.role === 'admin' || user.role === 'agent') && (<MenuItem
+                (user.role === 'admin' ) && (<MenuItem
                     id={SLUGS.packages}
                     title='Packages'
                     icon={ContactMailSharp}
                     onClick={() => onClick(SLUGS.packages)}
                 />)
             }
-
+{/* 
             {
                 user.role === 'admin' && (<MenuItem
                     id={SLUGS.payoutCash}
@@ -105,7 +105,7 @@ function SidebarComponent() {
                     icon={Payment}
                     onClick={() => onClick(SLUGS.payoutCash)}
                 />)
-            }
+            } */}
 
 
             {
@@ -161,7 +161,7 @@ function SidebarComponent() {
             }
 
             {
-                user.role === 'admin' && (<MenuItem
+                (user.role === 'admin' || user.role === 'agent') && (<MenuItem
                     id={SLUGS.contacts}
                     title='Support Contacts'
                     icon={IconContacts}

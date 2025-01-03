@@ -19,6 +19,8 @@ import SLUGS from '../resources/slugs'
 import { useHistory } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { convertSlugToUrl } from 'resources/utilities';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'features/userSlice';
 const TableCellStyle = {
   cursor: 'pointer'
 }
@@ -32,6 +34,7 @@ export default function AlertDialog() {
   const [searchWord, setSearchWord] = useState('')
   const [delOpen, setDelOpen] = useState(false)
   const [delError, setDelError] = useState('')
+  const user = useSelector(selectUser);
   const [selectedFarmer, setSelectedFarmer] = useState({})
 
   let { push } = useHistory();
@@ -44,16 +47,21 @@ export default function AlertDialog() {
 
 
   const fetchFarmers = () => {
+    var endpoint = `/farmer/agent/${user.id}`
+    if(user.role === 'admin'){
+      endpoint = `/farmer`
+    }
+    console.log(endpoint)
 
     setLoading(true);
     axios
-      .get(`/farmer`)
+      .get(endpoint)
       .then((response) => {
         // console.log(response)
         setFarmers(response.data.data)
         setLoading(false);
       }).catch((error) => {
-        setError("something went wrong")
+        setError(user.role ? "No farmers added yet" : "something went wrong")
         setLoading(false);
       });
   }
