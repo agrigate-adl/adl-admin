@@ -62,11 +62,8 @@ const PayoutCash = () => {
                 value={formData.residence}
                 onChange={handleChange}
                 required
-              />
-
-              
+              /> 
             </Grid>
-
 
             <Grid  item xs={12}>
             <TextField
@@ -114,27 +111,6 @@ const PayoutCash = () => {
                 onChange={handleChange}
                 required
               />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                variant="outlined"
-                component="label"
-                startIcon={<UploadFileIcon />}
-                fullWidth
-              >
-                Upload Supporting Documents
-                <input
-                  type="file"
-                  name="supportingDocuments"
-                  onChange={handleFileChange}
-                  hidden
-                />
-              </Button>
-              {formData.supportingDocuments && (
-                <Typography variant="body2" color="textSecondary">
-                  {formData.supportingDocuments.name}
-                </Typography>
-              )}
             </Grid>
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary" fullWidth>

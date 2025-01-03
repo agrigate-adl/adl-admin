@@ -97,7 +97,7 @@ function SidebarComponent() {
                     onClick={() => onClick(SLUGS.packages)}
                 />)
             }
-
+{/* 
             {
                 user.role === 'admin' && (<MenuItem
                     id={SLUGS.payoutCash}
@@ -105,7 +105,7 @@ function SidebarComponent() {
                     icon={Payment}
                     onClick={() => onClick(SLUGS.payoutCash)}
                 />)
-            }
+            } */}
 
 
             {
