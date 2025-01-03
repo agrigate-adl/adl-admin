@@ -158,6 +158,7 @@ export default function PackageSetModel({
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
         sx={{ height: '80vh', width: isSmallScreen ? '25rem' : 'auto' }}
+
       >
         <DialogTitle id="responsive-dialog-title">
           {isEditMode ? 'Edit Package' : 'Add Package'}

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis, Legend } from 'recharts';
 import axios from '../../axios';
@@ -23,10 +24,12 @@ function Analytics() {
     return (
         <div style={{ margin: '20px' }}>
             <h3>Transactions Per Year</h3>
+
             {error ? (
                 <p style={{ color: 'red' }}>Error: {error}</p>
             ) : (
                 <BarChart
+
                     width={800}
                     height={400}
                     data={barData}
@@ -40,6 +43,7 @@ function Analytics() {
                     {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
                         <Bar key={month} dataKey={month} fill={`#${Math.floor(Math.random() * 16777215).toString(16)}`} />
                     ))}
+
                 </BarChart>
             )}
         </div>

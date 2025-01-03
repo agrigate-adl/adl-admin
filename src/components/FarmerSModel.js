@@ -76,7 +76,9 @@ export default function ResponsiveDialog() {
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="responsive-dialog-title"
+
                 sx={{height:  '80vh', width: isSmallScreen ? '25rem': '100%'}}
+
             >
                 <DialogTitle id="responsive-dialog-title">{"Add Farmer Here"}</DialogTitle>
                 <DialogContent>

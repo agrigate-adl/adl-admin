@@ -77,12 +77,11 @@ export default function BasicTable() {
             const packageData = response.data.data;
                 setPackaged(packageData);
                
-                
+
                 localStorage.setItem('packageData', JSON.stringify(packageData))
 
                 const storedData = JSON.parse(localStorage.getItem('packageData'));
 
-                
 
                 setLoader(false);
             })
@@ -124,7 +123,7 @@ export default function BasicTable() {
             .then((response) => {
                 const sortedData = sortRecords(response.data.data);
                 setTransactions(sortedData);
-                
+
                 setFilteredTransactions(sortedData);
                 dispatch( setPackageData(sortedData));
                 setStati(false);
