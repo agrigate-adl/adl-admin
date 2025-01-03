@@ -35,6 +35,7 @@ const IndividualSavingStatement = () => {
       setIsLoading(false);
 
     } catch (err) {
+      
       setIsLoading(false);
       setError('Statement with this contact does not exist the system. Please check the provided contact or try again later.');
       setStatement(null);

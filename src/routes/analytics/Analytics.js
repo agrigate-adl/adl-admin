@@ -1,41 +1,45 @@
-import React from 'react';
-import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis, Legend } from 'recharts';
+import axios from '../../axios';
 
 function Analytics() {
-    // Access the data from the Redux store
-    const { packageData, error } = useSelector((state) => state.package);
+    const [barData, setBarData] = useState([]);
+    const [error, setError] = useState(null);
 
-    // Transform the Redux data into the format required for the BarChart
-    const barData = packageData.reduce((acc, item) => {
-        const month = new Date(item.createdAt).toLocaleString('default', { month: 'short' });
-        if (!acc[month]) {
-            acc[month] = { name: month, amount: 0 };
-        }
-        acc[month].amount += item.amount;
-        return acc;
-    }, {});
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post('/transactions/monthly_data');
+                const { data } = response.data;
+                setBarData(data);
+            } catch (err) {
+                setError('Failed to fetch transactions data');
+            }
+        };
 
-    // Convert the data into an array and sort by month
-    const formattedData = Object.values(barData);
+        fetchData();
+    }, []);
 
     return (
         <div style={{ margin: '20px' }}>
-            <h3>Transactions </h3>
+            <h3>Transactions Per Year</h3>
             {error ? (
                 <p style={{ color: 'red' }}>Error: {error}</p>
             ) : (
                 <BarChart
-                    width={600}
+                    width={800}
                     height={400}
-                    data={formattedData}
+                    data={barData}
                     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                    <XAxis dataKey="year" />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="amount" fill="#8884d8" />
+                    <Legend />
+                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
+                        <Bar key={month} dataKey={month} fill={`#${Math.floor(Math.random() * 16777215).toString(16)}`} />
+                    ))}
                 </BarChart>
             )}
         </div>
